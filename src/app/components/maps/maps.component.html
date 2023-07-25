@@ -1,0 +1,78 @@
+<div class="popup" id="popup">
+  <div class="close-btn" (click)="endForm()">&times;</div>
+  <div class="form">
+    <h2>Registro</h2>
+    <div class="form-element">
+      <input type="text" placeholder="Localização">
+      <input type="text" placeholder="Referência">
+      <select name="" id="" placeholder="teste">
+        <option value="">Banco Quebrado</option>
+      </select>
+      <select name="" id="">
+        <option value="" disabled selected>PROBLEMA:</option>
+        <option value="">Banco Quebrado</option>
+        <option value="">Mato grande</option>
+        <option value="">Banco Quebrado</option>
+        <option value="">Banco Quebrado</option>
+        <option value="">Banco Quebrado</option>
+      </select>
+      <select name="" id="">
+        <option value="" disabled selected>POSSÍVEL SOLUÇÃO:</option>
+        <option value="">Banco Quebrado</option>
+      </select>
+      <select name="" id="">
+        <option value="" disabled selected>ASSOCIAÇÃO DE BAIRRO</option>
+        <option value="">Exercito do bem</option>
+      </select>
+      <input type="file" id="fileInput">
+
+    </div>
+    <!-- <video autoplay></video>
+    <canvas></canvas>
+    <button>Tirar foto</button> -->
+  </div>
+
+  <button class="botao_registro" (click)="marker_city()">REGISTRAR</button>
+</div>
+
+
+
+
+<agm-map 
+  [latitude]="lat"
+  [longitude]="lng"
+  [zoom]="zoom"
+  [disableDefaultUI]="false"
+  [zoomControl]="false"
+  (mapClick)="mapClicked($event)">
+
+  <agm-marker 
+      *ngFor="let m of markers; let i = index"
+      (markerClick)="clickedMarker(m.label, i)"
+      [latitude]="m.lat"
+      [longitude]="m.lng"
+      [label]="m.label"
+      [markerDraggable]="m.draggable"
+      (dragEnd)="markerDragEnd(m, $event)">
+      
+    <agm-info-window>
+      <img src="./../assets/img/img_1.jpg" alt=""><br>
+      <button type="button" class="btn btn-danger">NÃO RESOLVIDO</button> 
+      <button type="button" class="btn btn-success">RESOLVIDO</button><br>
+      <button type="button" class="btn btn-secondary" style="width : 100%">DETALHES</button>
+    </agm-info-window>
+    
+  </agm-marker>
+  
+  <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
+      [radius]="5000"
+      [fillColor]="'red'"
+      [circleDraggable]="true"
+      [editable]="true">
+  </agm-circle>
+
+
+</agm-map>
+<div class="botao">
+  <button type="button" class="botao_registrar" id="openPopup" (click)="openForm()">REGISTRAR</button>
+</div>

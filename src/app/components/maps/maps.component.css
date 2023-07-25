@@ -1,0 +1,151 @@
+agm-map {
+    height: 800px;
+    z-index: 1;
+  }
+  #register{
+    position: absolute;
+  }
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #00C88E;
+  }
+  .menu{
+    background-color: #00C88E;
+    height: 50px;
+  }
+  
+  img{
+    width: 250px;
+    height: 200px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+  
+  .left-image {
+    align-self: flex-start;
+  }
+  
+  .right-image {
+    align-self: flex-end;
+  }
+  input{
+    margin-top: 10px;
+  }
+  .popup{
+    position: absolute;
+    top:60%;
+    
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1.25);
+    width: 380px;
+    padding: 20px 30px;
+    background-color: #ffffff;
+    box-shadow: 2px 2px 5px 5px rgba(0,0,0,0.15);
+    border-radius: 10px;
+    transition: top 0ms ease-in-out 200ms,
+                opacity 200ms ease-in-out 200ms,
+                transform 0ms ease-in-out 200ms;
+  }
+  .popup.active{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    z-index: 5;
+    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1.25);
+    width: 380px;
+    padding: 20px 30px;
+    background-color: #ffffff;
+    z-index: 1;
+    box-shadow: 2px 2px 5px 5px rgba(0,0,0,0.15);
+    border-radius: 10px;
+    transition: top 0ms ease-in-out 200ms,
+                opacity 200ms ease-in-out 200ms,
+                transform 0ms ease-in-out 200ms;
+  }
+  
+  .open{
+    z-index: 10;
+  }
+  
+  .end{
+    z-index: 0;
+  }
+  
+  #details{
+    width: 100%;
+  }
+  
+  .popup .close-btn{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 15px;
+    cursor: pointer;
+  }
+  
+  .popup .form h2{
+    text-align: center;
+    color: #00C88E;
+    margin: 10px 0px 20px;
+    font-size: 25px;
+  }
+  
+  .popup .form .form-element {
+    margin: 15px 0px;
+  }
+  
+  .botao_registro{
+    width: 100%;
+    height: 40px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: #00C88E;
+    color: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .popup .form .form-element input[type="text"],
+  .popup .form .form-element input[type="select"], select{
+    margin-top: 5px;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+  }
+  
+  
+  .botao{
+    position: absolute;
+    bottom:5%;
+    height: 50px;
+    left: 40%;
+    right: 40%;
+    opacity: 1;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    
+  }
+  
+  .botao_registrar{
+    width: 400px;
+    height: 40px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: #00C88E;
+    color: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  @media screen {
+    
+  }
