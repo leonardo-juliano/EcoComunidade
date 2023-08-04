@@ -6,7 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+  mostrar: boolean = false;
 
+  toggle () {
+    console.log('clicou')
+    this.mostrar = !this.mostrar;
+  }
   constructor() { }
 
   ngOnInit() {
