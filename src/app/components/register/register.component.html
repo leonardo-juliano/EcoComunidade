@@ -1,10 +1,33 @@
-<div class="modal">
-  Lorem ipsum dolor sit amet,
-    consectetur adipisicing elit.
-    Aliquam, sunt.
-</div>
-<div class="overlay"></div>
+<div class="popup" id="popup">
+  <div class="close-btn" (click)="endForm()">&times;</div>
+  <div class="form">
+    <h2>Registro</h2>
+    <div class="form-element">
+      <input type="text" placeholder="Localização">
+      <input type="text" placeholder="Referência">
+      <select name="" id="" placeholder="teste">
+        <option value="">Banco Quebrado</option>
+      </select>
+      <select name="" id="">
+        <option value="" disabled selected>PROBLEMA:</option>
+        <option value="" *ngFor="let problems of problem"></option>
+        <option value="">{{ problems }}</option>
+      </select>
+      <select name="" id="">
+        <option value="" disabled selected>POSSÍVEL SOLUÇÃO:</option>
+        <option value="">Banco Quebrado</option>
+      </select>
+      <select name="" id="">
+        <option value="" disabled selected>ASSOCIAÇÃO DE BAIRRO</option>
+        <option value="">Exercito do bem</option>
+      </select>
+      <input type="file" id="fileInput">
 
-<button (click)="modal.toggle()">
-  Mostrar modal
-</button>
+    </div>
+    <video autoplay></video>
+    <canvas></canvas>
+    <button>Tirar foto</button>
+  </div>
+
+  <button class="botao_registro" (click)="marker_city()">REGISTRAR</button>
+</div> 

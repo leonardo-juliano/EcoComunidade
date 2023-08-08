@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { navbarData } from './nav-data';
 
 @Component({
   selector: 'app-menu-lateral',
@@ -11,17 +12,32 @@ export class MenuLateralComponent implements OnInit {
 
   ngOnInit() {
   }
-  openNav() {
-    document.getElementById("menuOculto").style.width="250px"
-    document.getElementById("principal").style.marginLeft="250px"
-    document.getElementById("menuOculto").style.zIndex="1"
+
+  collapsed = false;
+  navData = navbarData
+
+
+  toggleCollapse(): void{
+    this.collapsed = !this.collapsed
   }
-  endNav() {
-  document.getElementById("menuOculto").style.width="0px"
-  document.getElementById("principal").style.marginLeft="0px"
-  
-  
+
+  closeSidenav():void{
+    this.collapsed = false
   }
-}
+
+
+
+
+ }
+//   openNav() {
+//     document.getElementById("menuOculto").style.width="250px"
+//     document.getElementById("principal").style.marginLeft="250px"
+//     document.getElementById("menuOculto").style.zIndex="1"
+//   }
+//   endNav() {
+//   document.getElementById("menuOculto").style.width="0px"
+//   document.getElementById("principal").style.marginLeft="0px" 
+//   }
+// }
 
 
