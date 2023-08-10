@@ -5,13 +5,12 @@
     <div class="form-element">
       <input type="text" placeholder="Localização">
       <input type="text" placeholder="Referência">
-      <select name="" id="" placeholder="teste">
+      <select name="" id="">
         <option value="">Banco Quebrado</option>
       </select>
       <select name="" id="">
         <option value="" disabled selected>PROBLEMA:</option>
-        <option value="" *ngFor="let problems of problem"></option>
-        <option value="">{{ problems }}</option>
+        <option *ngFor="let problem of problems" value="">{{ problem }}</option>
       </select>
       <select name="" id="">
         <option value="" disabled selected>POSSÍVEL SOLUÇÃO:</option>
@@ -19,15 +18,15 @@
       </select>
       <select name="" id="">
         <option value="" disabled selected>ASSOCIAÇÃO DE BAIRRO</option>
-        <option value="">Exercito do bem</option>
+        <option value="">Exército do Bem</option>
       </select>
-      <input type="file" id="fileInput">
-
+      <!-- <input type="file" id="fileInput"> -->
+    <!-- </div>
+    <div class="media">
+      <video autoplay></video>
+      <canvas></canvas>
+      <button>Tirar foto</button>
     </div>
-    <video autoplay></video>
-    <canvas></canvas>
-    <button>Tirar foto</button>
-  </div>
-
+  </div> -->
   <button class="botao_registro" (click)="marker_city()">REGISTRAR</button>
-</div> 
+</div>
