@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalService } from 'src/app/services/modal/modalService';
 
 
 @Component({
@@ -11,11 +12,10 @@ export class RegisterComponent implements OnInit {
 
   mostrar: boolean = false;
 
-  toggle () {
+  open () {
     console.log('clicou')
     this.mostrar = !this.mostrar;
   }
-  constructor() { }
 
   ngOnInit() {
   }

@@ -1,38 +1,61 @@
-<agm-map 
-  [latitude]="lat"
-  [longitude]="lng"
-  [zoom]="zoom"
-  [disableDefaultUI]="false"
-  [zoomControl]="false"
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
   (mapClick)="mapClicked($event)">
 
-  <agm-marker 
-      *ngFor="let m of markers; let i = index"
-      (markerClick)="clickedMarker(m.label, i)"
-      [latitude]="m.lat"
-      [longitude]="m.lng"
-      [label]="m.label"
-      [markerDraggable]="m.draggable"
-      (dragEnd)="markerDragEnd(m, $event)">
-      
+  <agm-marker *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.label, i)" [latitude]="m.lat"
+    [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable" (dragEnd)="markerDragEnd(m, $event)">
+
     <agm-info-window>
       <img src="./../assets/img/img_1.jpg" alt=""><br>
-      <button type="button" class="btn btn-danger">NÃO RESOLVIDO</button> 
+      <button type="button" class="btn btn-danger">NÃO RESOLVIDO</button>
       <button type="button" class="btn btn-success">RESOLVIDO</button><br>
       <button type="button" class="btn btn-secondary" style="width : 100%">DETALHES</button>
     </agm-info-window>
-    
+
   </agm-marker>
-  
-  <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
-      [radius]="5000"
-      [fillColor]="'red'"
-      [circleDraggable]="true"
-      [editable]="true">
+
+  <agm-circle [latitude]="lat + 0.3" [longitude]="lng" [radius]="5000" [fillColor]="'red'" [circleDraggable]="true"
+    [editable]="true">
   </agm-circle>
 
 
 </agm-map>
 <div class="botao">
-  <button type="button" class="botao_registrar" id="openPopup" (click)="openForm()">REGISTRAR</button>
+  <button type="button" class="botao_registrar" id="openPopup" (click)="open()">REGISTRAR</button>
 </div>
+
+
+<div class="popup" id="popup" *ngIf="show">
+  <div class="close-btn" (click)="endForm()">&times;</div>
+  <div class="form">
+    <h2>Registro</h2>
+    <div class="form-element">
+      <div class="row">
+        <label for="">Localização</label>
+        <input type="text" placeholder="Localização">
+      </div>
+      <div class="row">
+        <label for="">Referência</label>
+        <input type="text" placeholder="Referência">
+      </div>
+      <div class="row">
+        <label for="">Qual o problema ? </label>
+        <select name="" id="">
+          <option value="">- Selecionar -</option>
+          <option *ngFor="let s of problem" value="{{s.id}}">{{s.name}}
+          </option>
+        </select>
+        <label for="">Possivel Solução: </label>
+        <select name="" id="">
+          <option value="">- Selecionar -</option>
+          <option *ngFor="let s of solution" value="{{s.id}}">{{s.name}}
+          </option>
+        </select>
+        <label for="">ASSOCIAÇÃO DE BAIRRO</label>
+        <select name="" id="">
+          <option value="" disabled selected></option>
+          <option value="">Exército do Bem</option>
+        </select>
+      </div>
+      <button class="botao_registro" (click)="marker_city()">REGISTRAR</button>
+    </div>
+  </div>

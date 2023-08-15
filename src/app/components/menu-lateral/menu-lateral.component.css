@@ -14,6 +14,10 @@
         padding: 0.98rem 0.938rem 0 0.938rem;
         width: 100%;
 
+        .logo-container-img{
+            cursor: pointer;
+        }
+
 
         .logo {
             text-align: center;
@@ -34,10 +38,10 @@
             background-color: transparent;
             border: none;
 
-            .fa-times {
+            /* .fa-times {
                 color: #fff;
                 font-size: 24px;
-            }
+            } */
         }
     }
 }
