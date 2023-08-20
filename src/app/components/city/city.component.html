@@ -1,3 +1,18 @@
-<p>
-  city works!
-</p>
+<div class="container">
+  <div class="img_logo">
+    <img src="./../../../assets/img/logo_login.png" alt="">
+  </div>
+  <div class="city">
+    <select name="" id="">
+      <option value=""> -Selecionar Cidade</option>
+      <option *ngFor="let o of cities" value="{{o.cities}}"> {{ o.name }}</option>
+    </select>
+    <select name="" id="">
+      <option value=""> - Selecione a Área Verde </option>
+      <option *ngFor="let i of squares" value="{{i.id}}">{{ i.name }}</option>
+    </select>
+  </div>
+  <div class="buttons">
+    <button class="btn btn-success">continuar</button>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
+<!-- <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
   (mapClick)="mapClicked($event)">
 
   <agm-marker *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.label, i)" [latitude]="m.lat"
@@ -19,10 +19,17 @@
 
 
 </agm-map>
-<div class="botao">
+ -->
+
+<!-- <div class="map-container">
+  <div id="map" class="leaflet-map"></div>
+  <img src="assets/sua-imagem-de-fundo.jpg" alt="Imagem de Fundo" class="background-image">
+</div> -->
+
+<div class="botao" *ngIf="!show">
   <button type="button" class="botao_registrar" id="openPopup" (click)="open()">REGISTRAR</button>
 </div>
-
+<div id="map"></div>
 
 <div class="popup" id="popup" *ngIf="show">
   <div class="close-btn" (click)="endForm()">&times;</div>
@@ -59,3 +66,4 @@
       <button class="botao_registro" (click)="marker_city()">REGISTRAR</button>
     </div>
   </div>
+ </div> 

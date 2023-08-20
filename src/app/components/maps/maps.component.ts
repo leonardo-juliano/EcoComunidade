@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MouseEvent } from '@agm/core';
 import { ModalService } from 'src/app/services/modal/modalService';
 import { RegisterComponent } from '../register/register.component';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-maps',
@@ -14,6 +15,8 @@ export class MapsComponent {
   constructor(private modalService: ModalService) {
     this.modalService.setModalComponent(this.registerComponent);
   }
+  map: any;
+
   problem = [
     {'id': '1', 'name': 'Banco quebrado'},
     {'id': '2', 'name': 'Poluição'},
@@ -33,83 +36,92 @@ export class MapsComponent {
     this.show = false;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit(): void {
+    const map = L.map('map').setView([-21.297604, -46.712075], 17);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-   // google maps zoom level
-   zoom: number = 15;
+    // L.marker([51.5, -0.09]).addTo(map)
+    //   .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+    //   .openPopup();
+  }
+}
+
+//    // google maps zoom level
+//    zoom: number = 15;
   
   
-   // initial center position for the map
-   lat: number = -21.298382;
-   lng: number = -46.711447;
+//    // initial center position for the map
+//    lat: number = -21.298382;
+//    lng: number = -46.711447;
  
-   clickedMarker(label: string, index: number) {
-     console.log(`clicked the marker: ${label || index}`)
-   }
+//    clickedMarker(label: string, index: number) {
+//      console.log(`clicked the marker: ${label || index}`)
+//    }
  
    
-   mapClicked($event: MouseEvent) {
-     this.markers.push({
-       lat: $event.coords.lat,
-       lng: $event.coords.lng,
-       draggable: true
-     });
-   }
+//    mapClicked($event: MouseEvent) {
+//      this.markers.push({
+//        lat: $event.coords.lat,
+//        lng: $event.coords.lng,
+//        draggable: true
+//      });
+//    }
 
  
-   markerDragEnd(m: marker, $event: MouseEvent) {
-     console.log('dragEnd', m, $event);
-   }
-   markers: marker[] = [
-     {
-       lat: 51.673858,
-       lng: 7.815982,
-       label: 'A',
-       draggable: true
-     },
-     {
-       lat: 51.373858,
-       lng: 7.215982,
-       label: 'B',
-       draggable: false
-     },
-     {
-       lat: 51.723858,
-       lng: 7.895982,
-       label: 'C',
-       draggable: true
-     }
-   ]
+//    markerDragEnd(m: marker, $event: MouseEvent) {
+//      console.log('dragEnd', m, $event);
+//    }
+//    markers: marker[] = [
+//      {
+//        lat: 51.673858,
+//        lng: 7.815982,
+//        label: 'A',
+//        draggable: true
+//      },
+//      {
+//        lat: 51.373858,
+//        lng: 7.215982,
+//        label: 'B',
+//        draggable: false
+//      },
+//      {
+//        lat: 51.723858,
+//        lng: 7.895982,
+//        label: 'C',
+//        draggable: true
+//      }
+//    ]
  
-   marker_city(){
-     this.markers.push(
-       {lat: -21.297491,
-       lng:  -46.711780,
-       label: 'C',
-       draggable: true})
-     console.log(this.markers)
-   }
- }
+//    marker_city(){
+//      this.markers.push(
+//        {lat: -21.297491,
+//        lng:  -46.711780,
+//        label: 'C',
+//        draggable: true})
+//      console.log(this.markers)
+//    }
+//  }
  
- var video = document.querySelector('video');
+//  var video = document.querySelector('video');
  
- navigator.mediaDevices.getUserMedia({video:true})
- .then(stream => {
-     video.srcObject = stream;
-     video.play();
- })
- .catch(error => {
-     console.log(error);
- })
+//  navigator.mediaDevices.getUserMedia({video:true})
+//  .then(stream => {
+//      video.srcObject = stream;
+//      video.play();
+//  })
+//  .catch(error => {
+//      console.log(error);
+//  })
  
  
- // just an interface for type safety.
- interface marker {
-   lat: number;
-   lng: number;
-   label?: string;
-   draggable: boolean;
- }
+//  // just an interface for type safety.
+//  interface marker {
+//    lat: number;
+//    lng: number;
+//    label?: string;
+//    draggable: boolean;
+//  }
  
 

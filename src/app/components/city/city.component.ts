@@ -7,6 +7,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CityComponent implements OnInit {
 
+  cities = [
+    {'name': 'Guaxupé - MG', 
+    id: 1,
+    lat: -21.3050,
+    Long: -46.7090,},
+    {'name': 'Muzambinho - MG', 
+    id: 2,
+    lat: -21.3050,
+    Long: -46.7090,},
+  ];
+  squares = [
+    {'name': 'Praça da Mogiana',
+    id: 1,
+    lat: -21.3050,
+    Long: -46.7090,},
+    {'name': 'Praça da do Centro',
+    id: 2,
+    lat: -21.3050,
+    Long: -46.7090,},
+  ]
+
+
   constructor() { }
 
   ngOnInit() {
