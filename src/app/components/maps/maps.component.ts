@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MouseEvent } from '@agm/core';
-import { ModalService } from 'src/app/services/modal/modalService';
 import { RegisterComponent } from '../register/register.component';
+
 import * as L from 'leaflet';
 
 @Component({
@@ -10,10 +10,12 @@ import * as L from 'leaflet';
   styleUrls: ['./maps.component.css']
 })
 export class MapsComponent {
-  @ViewChild(RegisterComponent) registerComponent: RegisterComponent;
+  // @ViewChild(RegisterComponent) registerComponent: RegisterComponent;
 
-  constructor(private modalService: ModalService) {
-    this.modalService.setModalComponent(this.registerComponent);
+  // constructor(private modalService: ModalService) {
+  //   this.modalService.setModalComponent(this.registerComponent);
+  // }
+  constructor( private registerComponent: RegisterComponent) {
   }
   map: any;
 

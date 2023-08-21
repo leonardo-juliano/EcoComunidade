@@ -8,7 +8,7 @@ import { CityComponent } from './components/city/city.component';
 const routes: Routes = [
   {path:'login', component: LoginComponent },
   {path: '', component : MapsComponent},
-  {path: 'register', component: RegisterComponent}
+  {path: 'register', component: RegisterComponent},
   {path: 'city', component: CityComponent}
 ];
 
