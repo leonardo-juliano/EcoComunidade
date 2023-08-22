@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MouseEvent } from '@agm/core';
-import { RegisterComponent } from '../register/register.component';
+import { RegisterService } from '../../services/register/register.service';
+import { ToastrServiceService } from 'src/app/services/toastr/toastr-service.service';
 
 import * as L from 'leaflet';
 
@@ -10,12 +11,15 @@ import * as L from 'leaflet';
   styleUrls: ['./maps.component.css']
 })
 export class MapsComponent {
-  // @ViewChild(RegisterComponent) registerComponent: RegisterComponent;
 
-  // constructor(private modalService: ModalService) {
-  //   this.modalService.setModalComponent(this.registerComponent);
-  // }
-  constructor( private registerComponent: RegisterComponent) {
+  location= "";
+  reference = "";
+  register_problem: string;
+  register_solution:string;
+
+  constructor(
+    private registerService: RegisterService,
+    private toastrService: ToastrServiceService) {
   }
   map: any;
 
@@ -48,82 +52,36 @@ export class MapsComponent {
     //   .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
     //   .openPopup();
   }
+
+  mostrarMensagem() {
+    this.toastrService.showWarning('teste', 'Atenção!', {enableHTML: true});
+    alert('teste');
+  }
+
+  CreateRegister() {
+
+    try{
+      let data = {};
+      data['Location'] = this.location;
+      data['Reference'] = this.reference;
+      data['Register_problem'] = this.register_problem;
+      data['Register_solution'] = this.register_solution;
+      this.registerService.create_register(data).then(resp => {
+        this.location="";
+        this.reference= undefined;
+        this.register_problem = "";
+        this.register_solution = "";
+    })
+    .catch(error => {
+      // this.toastr.errorToastr('This is error toast.', 'Oops!');
+      // console.log(error);
+    });
+  }
+  catch(error){
+    // this.toastr.errorToastr('This is error toast.', 'Oops!');
+    // console.log(error);
+  }
+  }
 }
 
-//    // google maps zoom level
-//    zoom: number = 15;
-  
-  
-//    // initial center position for the map
-//    lat: number = -21.298382;
-//    lng: number = -46.711447;
- 
-//    clickedMarker(label: string, index: number) {
-//      console.log(`clicked the marker: ${label || index}`)
-//    }
- 
-   
-//    mapClicked($event: MouseEvent) {
-//      this.markers.push({
-//        lat: $event.coords.lat,
-//        lng: $event.coords.lng,
-//        draggable: true
-//      });
-//    }
-
- 
-//    markerDragEnd(m: marker, $event: MouseEvent) {
-//      console.log('dragEnd', m, $event);
-//    }
-//    markers: marker[] = [
-//      {
-//        lat: 51.673858,
-//        lng: 7.815982,
-//        label: 'A',
-//        draggable: true
-//      },
-//      {
-//        lat: 51.373858,
-//        lng: 7.215982,
-//        label: 'B',
-//        draggable: false
-//      },
-//      {
-//        lat: 51.723858,
-//        lng: 7.895982,
-//        label: 'C',
-//        draggable: true
-//      }
-//    ]
- 
-//    marker_city(){
-//      this.markers.push(
-//        {lat: -21.297491,
-//        lng:  -46.711780,
-//        label: 'C',
-//        draggable: true})
-//      console.log(this.markers)
-//    }
-//  }
- 
-//  var video = document.querySelector('video');
- 
-//  navigator.mediaDevices.getUserMedia({video:true})
-//  .then(stream => {
-//      video.srcObject = stream;
-//      video.play();
-//  })
-//  .catch(error => {
-//      console.log(error);
-//  })
- 
- 
-//  // just an interface for type safety.
-//  interface marker {
-//    lat: number;
-//    lng: number;
-//    label?: string;
-//    draggable: boolean;
-//  }
- 
 

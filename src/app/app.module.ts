@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +11,7 @@ import { LoginComponent } from './components/login/login.component';
 import { CityComponent } from './components/city/city.component';
 import { RegisterComponent } from './components/register/register.component';
 import { MapsComponent } from './components/maps/maps.component';
+import { ToastrModule } from 'ng6-toastr-notifications';
 
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
@@ -32,6 +35,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFireStorageModule,
+    ToastrModule.forRoot ( ),
+    FormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyD_lGpJO31TkbmQsT9pJJS6N5RURmovzbk'
     })

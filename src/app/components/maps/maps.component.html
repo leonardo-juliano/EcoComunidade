@@ -38,23 +38,23 @@
     <div class="form-element">
       <div class="row">
         <label for="">Localização</label>
-        <input type="text" placeholder="Localização">
+        <input type="text" placeholder="Localização" [(ngModel)]="location">
       </div>
       <div class="row">
         <label for="">Referência</label>
-        <input type="text" placeholder="Referência">
+        <input type="text" placeholder="Referência" [(ngModel)]="reference">
       </div>
       <div class="row">
         <label for="">Qual o problema ? </label>
-        <select name="" id="">
+        <select name="" id="" [(ngModel)]="register_problem">
           <option value="">- Selecionar -</option>
           <option *ngFor="let s of problem" value="{{s.id}}">{{s.name}}
           </option>
         </select>
         <label for="">Possivel Solução: </label>
-        <select name="" id="">
+        <select name="" id="" [(ngModel)]="register_solution">
           <option value="">- Selecionar -</option>
-          <option *ngFor="let s of solution" value="{{s.id}}">{{s.name}}
+          <option *ngFor="let s of solution" value="{{s.id}}" >{{s.name}}
           </option>
         </select>
         <label for="">ASSOCIAÇÃO DE BAIRRO</label>
@@ -63,7 +63,7 @@
           <option value="">Exército do Bem</option>
         </select>
       </div>
-      <button class="botao_registro" (click)="register_tasks()">REGISTRAR</button>
+      <button class="botao_registro" (click)="mostrarMensagem()">REGISTRAR</button>
     </div>
   </div>
- </div> 
+</div>

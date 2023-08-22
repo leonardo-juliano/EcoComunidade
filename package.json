@@ -31,6 +31,7 @@
     "core-js": "^2.5.4",
     "firebase": "^7.24.0",
     "leaflet": "^1.9.4",
+    "ng6-toastr-notifications": "^1.0.4",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
   },
