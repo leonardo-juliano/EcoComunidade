@@ -1,70 +1,52 @@
-
 .container {
-    padding: 20px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 
-  }  
-  .city {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+}
 
-  }
-  
-  .buttons {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100vh;
-  }
-  
-  .buttons button {
-    margin: 5px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 50%;
-  }
-  
-  .buttons p {
-    margin-top: 10px;
-  }
-  
+.city {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vh;
+}
 
-  select {
-    height: 40px;
-    width: 200px;
-    /* Adicione borda */
-    border: 1px solid #ccc;
-    padding: 5px;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: white;
-    background-image: linear-gradient(to bottom, white, #f1f1f1);
-  }
+.city select {
+  margin: 5px;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+}
 
-  select option {
-    padding: 10px;
-    background-color: #f9f9f9;
-  }
-  
-  select:focus {
-    border-color: #6d9fea;
-    background-color: #fff;
-    color: #333;
-  }
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vh;
+}
 
-  img{
-    width: 200px;
-    height: 200px;
-  }
+.buttons button {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 50%;
+}
+
+.buttons p {
+  margin-top: 10px;
+}
+
+img {
+  width: 200px;
+  height: 200px;
+}

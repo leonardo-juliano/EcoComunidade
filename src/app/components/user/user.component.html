@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="img_logo">
+    <img src="./../../../assets/img/logo_login.png" alt="">
+  </div>
+  <div class="login">
+    <input type="text" placeholder="Nome Completo" [(ngModel)]="name">
+    <input type="tel" placeholder="Celular" [(ngModel)]="phone">
+    <input type="text" placeholder="CEP" [(ngModel)]="cep">
+    <input type="email" placeholder="Email" [(ngModel)]="email">
+    <input type="password" placeholder="Senha" [(ngModel)]="password">
+    <input type="text" placeholder="Cidade" [(ngModel)]="city">
+  </div>
+  <div class="buttons">
+    <button class="btn btn-success" (click)="register(email, password, name, address,phone,cep,city)">Cadastrar</button>
+  </div>
+  <div class="buttons">
+    <button class="btn btn-success" (click)="redirect()">Entrar</button>
+  </div>

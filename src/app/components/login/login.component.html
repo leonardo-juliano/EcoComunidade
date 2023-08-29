@@ -3,13 +3,13 @@
       <img src="./../../../assets/img/logo_login.png" alt="">
     </div>
     <div class="login">
-      <input type="text" placeholder="Usuario">
-      <input type="text" placeholder="Senha">
+      <input type="text" placeholder="Usuario" name="email" [(ngModel)]="email">
+      <input type="password" placeholder="Senha"name="password" [(ngModel)]="password">
     </div>
     <div class="buttons">
-      <button class="btn btn-success" (click)="showWarning()">Criar conta</button>
-      <button class="btn btn-success">Entrar</button>
-      <p>Esqueci minha senha</p>
+      <button class="btn btn-success" (click)="auth.login(this.email, this.password)">Entrar</button>
+      <button class="btn btn-success" (click)="redirect()">Criar Conta</button>
+      <p>Esqueci Minha Senha</p>
     </div>
-    <p>ENTRAR SEM CADASTRO</p>
+    <!-- <p>ENTRAR SEM CADASTRO</p> -->
   </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { navbarData } from './nav-data';
+import { AuthService } from 'src/app/services/auth/auth.service';
+
 
 @Component({
   selector: 'app-menu-lateral',
@@ -8,7 +10,9 @@ import { navbarData } from './nav-data';
 })
 export class MenuLateralComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public auth: AuthService,
+  ) { }
 
   ngOnInit() {
   }
@@ -17,27 +21,17 @@ export class MenuLateralComponent implements OnInit {
   navData = navbarData
 
 
-  toggleCollapse(): void{
+  toggleCollapse(): void {
     this.collapsed = !this.collapsed
   }
 
-  closeSidenav():void{
+  closeSidenav(): void {
     this.collapsed = false
   }
 
 
 
 
- }
-//   openNav() {
-//     document.getElementById("menuOculto").style.width="250px"
-//     document.getElementById("principal").style.marginLeft="250px"
-//     document.getElementById("menuOculto").style.zIndex="1"
-//   }
-//   endNav() {
-//   document.getElementById("menuOculto").style.width="0px"
-//   document.getElementById("principal").style.marginLeft="0px" 
-//   }
-// }
+}
 
 

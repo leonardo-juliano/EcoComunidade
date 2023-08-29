@@ -48,6 +48,15 @@
 
 .sidenav-collapsed {
     width: 16.5625rem;
+    .sidenav-nav-link {
+        display: flex;
+        align-items: center;
+        height: 3rem;
+        color: #f3f3f3;
+        border-radius: 0.625rem;
+        text-decoration: none;
+        transition: color .3s ease;
+    }
 }
 
 .sidenav-nav {
@@ -65,7 +74,14 @@
         margin-bottom: 0.625rem;
         align-items: center;
         justify-content: center;
+
     }
+
+    .sidenav-nav-item-exit{
+        position: fixed;
+        bottom: 0;
+    }
+
     
     .sidenav-link-text {
         margin-left: 1.5rem;
@@ -74,6 +90,7 @@
     .sidenav-nav-link {
         display: flex;
         align-items: center;
+        justify-content: center;
         height: 3rem;
         color: #f3f3f3;
         border-radius: 0.625rem;
