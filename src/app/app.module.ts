@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AgmCoreModule } from '@agm/core';
@@ -14,6 +12,8 @@ import { CityComponent } from './components/city/city.component';
 import { RegisterComponent } from './components/register/register.component';
 import { MapsComponent } from './components/maps/maps.component';
 import { ToastrModule } from 'ngx-toastr';
+import { RouterModule } from '@angular/router';
+
 
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
@@ -45,6 +45,7 @@ import { AuthService } from './services/auth/auth.service';
     AngularFireStorageModule,
     ToastrModule.forRoot ( ),
     FormsModule,
+    RouterModule,
     AngularFireAuthModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyD_lGpJO31TkbmQsT9pJJS6N5RURmovzbk'

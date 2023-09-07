@@ -9,14 +9,6 @@
     <h2>Registro</h2>
     <div class="form-element">
       <div class="row">
-        <label for="">Localização</label>
-        <input type="text" placeholder="Localização" [(ngModel)]="location">
-      </div>
-      <div class="row">
-        <label for="">Referência</label>
-        <input type="text" placeholder="Referência" [(ngModel)]="reference">
-      </div>
-      <div class="row">
         <label for="">Qual o problema ? </label>
         <select name="" id="" [(ngModel)]="register_problem">
           <option value="">- Selecionar -</option>
@@ -28,11 +20,6 @@
           <option value="">- Selecionar -</option>
           <option *ngFor="let s of solution" value="{{s.id}}">{{s.name}}
           </option>
-        </select>
-        <label for="">Associação de Bairro</label>
-        <select name="" id="">
-          <option value="" disabled selected></option>
-          <option value="">Exército do Bem</option>
         </select>
       </div>
       <button class="botao_registro" (click)="CreateRegister()">REGISTRAR</button>

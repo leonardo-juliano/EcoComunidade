@@ -50,7 +50,7 @@ export class AuthService {
       this.toastr.success('Usuário Logado com sucesso');
       return result;
     } catch (error) {
-      this.toastr.error('Email ou Senha no existe');
+      this.toastr.error('Preencher Email e Senha');
       this.error = error;
     }
   }

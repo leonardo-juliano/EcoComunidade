@@ -13,7 +13,6 @@ export class RegisterComponent implements OnInit {
   mostrar: boolean = false;
 
   open () {
-    console.log('clicou')
     this.mostrar = !this.mostrar;
   }
 
