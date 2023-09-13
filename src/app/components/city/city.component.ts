@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CityService } from 'src/app/services/city/city.service';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,14 +11,15 @@ import { FormsModule } from '@angular/forms';
 })
 export class CityComponent implements OnInit {
 
-  constructor(private cityService: CityService) { }
+  constructor(private cityService: CityService,
+    private router: Router) { }
 
   items: any[];
   greenAreas = [];
   cities = [];
-  citySelected='';
+  citySelected = '';
   greenSelected = [];
-
+  
   ngOnInit() {
     this.cityService.getGrennAreas().subscribe(data => {
       this.greenAreas = data;
@@ -26,21 +28,17 @@ export class CityComponent implements OnInit {
     this.cityService.getCitys().subscribe(data => {
       this.cities = data;
     });
-    this.onCityChange()
-  }
-
-  onCityChange() {
-    console.log(this.citySelected);
   }
 
   getGrennAreas() {
     this.cityService.getGrennAreas().subscribe(data => {
       this.greenAreas = data;
     });
-    
+
     this.greenSelected = this.greenAreas.filter(green => green.city == this.citySelected);
+  }
 
-    console.log(this.greenSelected);
-
-}
+  sendPAram() {
+    this.router.navigate(['maps', this.greenSelected]);
+  }
 }

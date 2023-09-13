@@ -31,6 +31,7 @@
     "core-js": "^2.5.4",
     "firebase": "^7.24.0",
     "leaflet": "^1.9.4",
+    "ng-multiselect-dropdown": "^1.0.0",
     "ng6-toastr-notifications": "^1.0.4",
     "ngx-toastr": "^11.3.3",
     "rxjs": "~6.3.3",

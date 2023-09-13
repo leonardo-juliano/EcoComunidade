@@ -8,7 +8,7 @@ import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
   {path:'login', component: LoginComponent },
-  {path: '', component : MapsComponent},
+  {path: 'maps/:id', component : MapsComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'city', component: CityComponent},
   {path: 'user', component: UserComponent}

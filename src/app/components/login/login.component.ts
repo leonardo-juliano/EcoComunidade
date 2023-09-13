@@ -20,12 +20,9 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        // Usuário está logado, redirecionar para a página desejada
-        console.log('usuario esta logado')
-        this.router.navigate(['/']);
+        this.router.navigate(['/city']);
       } else {
         console.log('usuario não esta logado')
-        // Usuário não está logado
       }
     });
   }

@@ -206,7 +206,9 @@ select {
     margin: 10px 0px 20px;
     font-size: 25px;
   }
-  
+  .meuBotao{
+    background-color: red;
+  }
   .popup .form .form-element {
     margin: 15px 0px;
   }
