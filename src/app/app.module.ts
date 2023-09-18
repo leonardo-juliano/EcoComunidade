@@ -23,6 +23,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { UserComponent } from './components/user/user.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AuthService } from './services/auth/auth.service';
+import { CollaboratorComponent } from './components/collaborator/collaborator.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AuthService } from './services/auth/auth.service';
     RegisterComponent,
     MapsComponent,
     UserComponent,
+    CollaboratorComponent,
     
   ],
   imports: [

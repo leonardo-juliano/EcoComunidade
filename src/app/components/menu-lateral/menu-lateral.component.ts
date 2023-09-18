@@ -20,17 +20,15 @@ export class MenuLateralComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    // Assine as alterações de rota para atualizar this.rotaAtual
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.rotaAtual = event.url;
-        this.getRouter(); // Chame a função após a atualização da rota
+        this.getRouter(); 
       }
     });
   }
 
   ngOnInit() {
-    // Não é necessário chamar getRouter() aqui, pois já está sendo chamado no construtor
   }
 
   toggleCollapse(): void {
@@ -38,9 +36,7 @@ export class MenuLateralComponent implements OnInit {
   }
 
   getRouter() {
-    console.log('rota atual: ', this.rotaAtual);
-
-    if (this.rotaAtual == '/login' || this.rotaAtual == '/user' || this.rotaAtual == '/city') {
+    if (this.rotaAtual == '/login' || this.rotaAtual == '/user' || this.rotaAtual == '/city' || this.rotaAtual == '/collaborator') {
       this.showMenu = false;
     }else{
       this.showMenu = true;

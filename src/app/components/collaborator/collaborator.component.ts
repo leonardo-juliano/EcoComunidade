@@ -3,13 +3,13 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 
-
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: 'app-collaborator',
+  templateUrl: './collaborator.component.html',
+  styleUrls: ['./collaborator.component.css']
 })
-export class UserComponent implements OnInit {
+export class CollaboratorComponent implements OnInit {
+
   email: string = '';
   password: string = '';
   name: string = '';
@@ -17,7 +17,7 @@ export class UserComponent implements OnInit {
   phone: number;
   cep: number;
   city: string = '';
-  collaborator= false;
+  collaborator= true;
 
 
   constructor(
@@ -41,9 +41,6 @@ export class UserComponent implements OnInit {
     if (this.phone === undefined || this.phone === null) {
       msg += 'O campo <b>TELEFONE</b> é obrigatório.<br>';
     }
-    if (this.cep === 0 || this.cep === undefined || this.cep === null) {
-      msg += 'O campo <b>CEP</b> é obrigatório.<br>';
-    } 
     if (this.email === '' || this.email === undefined || this.email === null) {
       msg += 'O campo <b>EMAIL</b> é obrigatório.<br>';
     }
@@ -72,5 +69,6 @@ export class UserComponent implements OnInit {
         });
     }
   }
+
 
 }

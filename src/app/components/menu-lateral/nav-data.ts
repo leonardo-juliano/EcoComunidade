@@ -1,32 +1,32 @@
 export const navbarData = [
     {
-        routerLink: 'dasboard',
+        routerLink: '/',
         icon: 'fa-solid fa-magnifying-glass',
         label: 'Buscar Áreas Verdes'
     },
     {
-        routerLink: 'dasboard',
+        routerLink: '/',
         icon: 'fa-regular fa-pen-to-square',
         label: 'Registrar Problema'
     },
     {
-        routerLink: 'dasboard',
+        routerLink: '/',
         icon: 'fa-sharp fa-regular fa-circle-check',
         label: 'Solucionar'
     },
     {
-        routerLink: 'dasboard',
+        routerLink: '/implantation',
         icon: 'fa-solid fa-book',
         label: 'Guia'
     },
     {
-        routerLink: 'dasboard',
-        icon: 'fa-regular fa-comments',
-        label: 'Canal de Relacionamento'
+        routerLink: '/city',
+        icon: 'fa-solid fa-location-dot',
+        label: 'Localização'
     },
     {
-        routerLink: 'dasboard',
+        routerLink: '/',
         icon: 'fa-solid fa-handshake',
-        label: 'Associações Parceiras'
+        label: 'Colaboradores'
     },
 ]

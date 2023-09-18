@@ -3,19 +3,17 @@
     <img src="./../../../assets/img/logo_login.png" alt="">
   </div>
   <div class="city">
-    <select name="" id="" (change)="getGrennAreas()" [(ngModel)]="citySelected">
+    <select (change)="getGrennAreas()" [(ngModel)]="citySelected">
       <option value=""> - Selecionar Cidade</option>
       <option *ngFor="let o of cities" [value]="o.code">{{ o.name }} - ( {{o.UF}} )</option>
     </select>
-    <select name="" id="" [(ngModel)]="greenSelected" *ngIf="citySelected">
-      <option value=""> - Selecionar Area Verde</option>
+    <select  [(ngModel)]="greenSelected" *ngIf="citySelected">
+      <!-- <option value=""> - Selecionar Area Verde </option> -->
       <option *ngFor="let i of greenSelected" [value]="i.code">{{ i.name }}</option>
     </select>
   </div>
   <div class="buttons">
-    <button class="btn btn-success">Buscar minha localização atual</button>
-  </div>
-  <div class="buttons">
-    <button class="btn btn-success" (click)="sendPAram()">continuar</button>
+    <button class="btn btn-success" (click)="getLocation()">Buscar minha localização atual</button>
+    <button class="btn btn-success" (click)="sendParam()">Continuar</button>
   </div>
 </div>

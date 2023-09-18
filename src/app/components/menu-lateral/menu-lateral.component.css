@@ -1,110 +1,143 @@
+/* Estilos base para a barra lateral */
 .sidenav {
-    background-color: #00C88E;
-    transition: all .5s ease;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    width: 5rem;
-    height: 100vh;
-    box-shadow: 0.063rem 0 1.25rem 0 #000000;
-
-    .logo-container {
-        display: flex;
-        align-items: center;
-        padding: 0.98rem 0.938rem 0 0.938rem;
-        width: 100%;
-
-        .logo-container-img{
-            cursor: pointer;
-        }
-
-
-        .logo {
-            text-align: center;
-            width: 3rem;
-            min-width: 3rem;
-            padding: 0.313rem;
-            font-size: 24px;
-            font-weight: 900;
-
-        }
-
-        .btn-close {
-            margin-left: auto;
-            cursor: pointer;
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            background-color: transparent;
-            border: none;
-
-            /* .fa-times {
-                color: #fff;
-                font-size: 24px;
-            } */
-        }
-    }
+  background-color: #00C88E;
+  transition: all 0.5s ease;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  width: 5rem;
+  height: 100vh;
+  box-shadow: 1px 0 20px rgba(0, 0, 0, 0.15);
 }
 
+.sidenav .logo-container {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+}
+
+.sidenav .logo-container .logo-container-img {
+  cursor: pointer;
+}
+
+.sidenav .logo-container .logo {
+  text-align: center;
+  width: 3rem;
+  min-width: 3rem;
+  padding: 0.313rem;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.sidenav .logo-container .btn-close {
+  margin-left: auto;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+}
+
+/* Estilos para a barra lateral recolhida */
 .sidenav-collapsed {
-    width: 16.5625rem;
-    .sidenav-nav-link {
-        display: flex;
-        align-items: center;
-        height: 3rem;
-        color: #f3f3f3;
-        border-radius: 0.625rem;
-        text-decoration: none;
-        transition: color .3s ease;
-    }
+  width: 16.5625rem;
 }
 
+.sidenav-collapsed .sidenav-nav-link {
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  color: #f3f3f3;
+  border-radius: 0.625rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* Estilos para a navegação na barra lateral */
 .sidenav-nav {
-    list-style: none;
-    padding: 0.938rem;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
+  list-style: none;
+  padding: 0.938rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100% - 3.65rem);
+  cursor: pointer;
+}
+
+.sidenav-nav-item {
+  width: 100%;
+  margin-bottom: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidenav-nav-item-exit {
+  position: fixed;
+  bottom: 0;
+}
+
+.sidenav-link-text {
+  margin-left: 1.5rem;
+  color: #ffffff;
+}
+
+.sidenav-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  color: #f3f3f3;
+  border-radius: 0.625rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* Estilos para a barra lateral recolhida em telas menores */
+@media screen and (max-width: 768px) {
+  .sidenav {
+    width: 100%;
+    height: auto;
+  }
+
+  .sidenav .logo-container {
+    justify-content: space-between;
+    padding: 1rem;
     align-items: center;
-    height: calc(100% - 3.65rem);
-    cursor: pointer;}
+  }
 
-    .sidenav-nav-item {
-        width: 100%;
-        margin-bottom: 0.625rem;
-        align-items: center;
-        justify-content: center;
+  .sidenav .logo-container .menu-responsivo {
+    display: block;
+  }
 
-    }
+  .sidenav .logo-container .logo-container-img {
+    display: none;
+  }
 
-    .sidenav-nav-item-exit{
-        position: fixed;
-        bottom: 0;
-    }
+  .sidenav .sidenav-nav {
+    flex-direction: row; /* Exibir links horizontalmente */
+  }
 
-    
-    .sidenav-link-text {
-        margin-left: 1.5rem;
-        color : #ffffff;
-    }
-    .sidenav-nav-link {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 3rem;
-        color: #f3f3f3;
-        border-radius: 0.625rem;
-        text-decoration: none;
-        transition: color .3s ease;
-    }
+  .sidenav .sidenav-nav-item {
+    margin-right: 10px; /* Espaçamento entre os itens do menu */
+  }
 
-    .sidenav-nav-item:hover {
-        .sidenav-nav-link {
-            background-color: #ffffff;
-            color: #00C88E;
-        }
-        .sidenav-link-text {
-            margin-left: 1.5rem;
-            color : #00C88E;
-        }
-    }
+  .sidenav .sidenav-nav-link {
+    height: auto;
+  }
+
+  .sidenav .sidenav-link-icon {
+    margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+  }
+
+  .sidenav .sidenav-link-text {
+    display: inline-block; /* Exibir texto ao lado do ícone */
+  }
+
+  .sidenav-collapsed {
+    width: 5rem;
+  }
+}

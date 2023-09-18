@@ -1,10 +1,11 @@
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''" *ngIf="showMenu">
   <div class="logo-container" (click)="toggleCollapse()">
+    <!-- <div class="menu-responsivo">
+      <i class="fa-solid fa-bars" (click)="closeSidenav()"></i>
+    </div> -->
     <div class="logo-container-img">
       <img src="./../../../assets/img/logo.png" alt="">
     </div>
-    
-    <!-- <div class="logo-text" *ngIf="collapsed" (click)="closeSidenav()">EcoComunidade</div> -->
     <button class="btn-close" *ngIf="collapsed">
       <i class="fal fa-times close-icon"></i>
     </button>
@@ -13,13 +14,13 @@
     <li class="sidenav-nav-item" *ngFor="let data of navData">
       <a class="sidenav-nav-link" [routerLink]="[data.routerLink]">
         <i class="sidenav-link-icon" [class]="data.icon"></i>
-        <span class="sidenav-link-text" *ngIf = "collapsed">{{data.label}}</span>
+        <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
       </a>
     </li>
     <li class="sidenav-nav-item-exit">
-      <a class="sidenav-nav-link"(click)="auth.signOut()">
+      <a class="sidenav-nav-link" (click)="auth.signOut()">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        <span class="sidenav-link-text" *ngIf = "collapsed">Sair</span>
+        <span class="sidenav-link-text" *ngIf="collapsed">Sair</span>
       </a>
     </li>
   </ul>

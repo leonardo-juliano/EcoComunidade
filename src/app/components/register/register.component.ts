@@ -8,13 +8,13 @@ import { ModalService } from 'src/app/services/modal/modalService';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  problem = ['Banco Quebrado','Mato grande', 'Falta de manutenção adequada', 'Descarte inadequado de lixo']
+  // problem = ['Banco Quebrado','Mato grande', 'Falta de manutenção adequada', 'Descarte inadequado de lixo']
 
-  mostrar: boolean = false;
+  // mostrar: boolean = false;
 
-  open () {
-    this.mostrar = !this.mostrar;
-  }
+  // open () {
+  //   this.mostrar = !this.mostrar;
+  // }
 
   ngOnInit() {
   }

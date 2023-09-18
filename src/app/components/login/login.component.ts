@@ -30,5 +30,8 @@ export class LoginComponent implements OnInit {
   redirect(){
     this.router.navigate(['/user']);
   }
+  redirect_colaborator(){
+    this.router.navigate(['/collaborator']);
+  }
 
 }

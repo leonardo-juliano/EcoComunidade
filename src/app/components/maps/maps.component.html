@@ -10,19 +10,48 @@
     <div class="form-element">
       <div class="row">
         <label for="">Qual o problema ? </label>
-        <select name="" id="" [(ngModel)]="register_problem">
+        <select name="" id="register_problem" [(ngModel)] = "register_problem" placeholder='teste'>
           <option value="">- Selecionar -</option>
-          <option *ngFor="let s of problem" value="{{s.id}}">{{s.name}}
+          <option *ngFor="let s of problem" value="{{s.name}}">{{s.name}}
           </option>
         </select>        
-        <label for="">Possivel Solução: </label>
-        <select name="" id="" [(ngModel)]="register_solution">
+        <label for="">Descrição detalhada:</label>
+        <input type="text"/>
+        <label>Status</label>
+        <select name="" id="" [(ngModel)]="register_status">
           <option value="">- Selecionar -</option>
-          <option *ngFor="let s of solution" value="{{s.id}}">{{s.name}}
+          <option *ngFor="let s of status" value="{{s.name}}">{{s.name}}
+          </option>
+        </select>
+        <input type="file" (change)="handleFileInput($event)">
+      </div>
+      <!-- <video #videoElement autoplay></video> -->
+      <button class="botao_registro" (click)="CreateRegister()">TIRAR FOTO</button>
+      <button class="botao_registro" (click)="CreateRegister()">REGISTRAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup de detalhes -->
+<div class="popup_details" id="popup_details" *ngIf="show_details">
+  <div class="close-btn" (click)="end_details()">&times;</div>
+  <div class="form">
+    <h2>Detalhes</h2>
+    <div class="form-element">
+      <div class="row">
+        <label for="">Qual o problema ? </label>
+        <select name="" id="register_problem" disabled>
+          <option *ngFor="let s of problem" value="{{s.id}}">{{s.name}}</option>
+        </select>        
+        <label for="">Descrição detalhada:</label>
+        <input type="text" value="{{s.description}}"/>
+        <label>Status</label>
+        <select name="" id="" [(ngModel)]="register_status">
+          <option value="">- Selecionar -</option>
+          <option *ngFor="let s of status" value="{{s.id}}">{{s.name}}
           </option>
         </select>
       </div>
-      <button class="botao_registro" (click)="CreateRegister()">REGISTRAR</button>
     </div>
   </div>
 </div>

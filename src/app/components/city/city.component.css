@@ -5,8 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-
+  min-height: 100vh; /* Usar min-height para garantir que o conteúdo seja exibido em telas pequenas */
 }
 
 .city {
@@ -14,15 +13,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vh;
+  max-width: 80%; /* Largura máxima para manter a legibilidade */
+  width: 100%; /* Ocupar toda a largura disponível */
+  box-sizing: border-box; /* Incluir padding e borda na largura total */
 }
 
 .city select {
   margin: 5px;
-  padding: 10px 20px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 50%;
+  width: 100%; /* Ocupar toda a largura do container */
+  max-width: 300px; /* Largura máxima para evitar que fique muito largo em telas grandes */
 }
 
 .buttons {
@@ -30,16 +32,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vh;
+  max-width: 80%; /* Largura máxima para manter a legibilidade */
+  width: 100%; /* Ocupar toda a largura disponível */
+  box-sizing: border-box; /* Incluir padding e borda na largura total */
 }
 
 .buttons button {
   margin: 5px;
-  padding: 10px 20px;
+  padding: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 50%;
+  width: 100%; /* Ocupar toda a largura do container */
+  max-width: 300px; /* Largura máxima para evitar que fique muito largo em telas grandes */
 }
 
 .buttons p {
@@ -47,6 +52,6 @@
 }
 
 img {
-  width: 200px;
-  height: 200px;
+  max-width: 100%; /* Garantir que a imagem não exceda a largura do container pai */
+  height: auto; /* Manter a proporção original da imagem */
 }
