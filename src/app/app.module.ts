@@ -25,6 +25,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AuthService } from './services/auth/auth.service';
 import { CollaboratorComponent } from './components/collaborator/collaborator.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

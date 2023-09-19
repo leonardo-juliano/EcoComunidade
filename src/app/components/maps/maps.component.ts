@@ -10,7 +10,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { CityService } from 'src/app/services/city/city.service';
-
+import 'leaflet.heat';
 
 
 @Component({
@@ -29,6 +29,7 @@ export class MapsComponent {
   long = 0;
   active = 1;
   currentMarkerData: any;
+  user = '';
 
   show: boolean = false;
   show_details: boolean = false;
@@ -46,7 +47,12 @@ export class MapsComponent {
   }
   ngOnInit(): void {
     this.getGreenAreas();
-
+    //verificar usuario que esta logado
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.user = user.email
+      }
+    });
     this.afAuth.authState.subscribe(user => {
       if (user) {
       } else {
@@ -60,13 +66,6 @@ export class MapsComponent {
     });
   }
 
-  // Anexar imagens
-  handleFileInput(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      console.log('Arquivo selecionado:', file);
-    }
-  }
 
   getGreenAreas() {
     this.cityService.getGrennAreas().subscribe(data => {
@@ -91,197 +90,331 @@ export class MapsComponent {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
-
+  
+    const heat = L.heatLayer([], { radius: 25 }).addTo(map);
     const coordenadasAdicionadas = {}; // Objeto para rastrear coordenadas já adicionadas
-
+  
     this.mapsservice.getAllMarkers().subscribe(data => {
       data.forEach(markerData => {
         if (markerData['active'] !== 0) {
           const latLngKey = `${markerData.lat}_${markerData.long}`;
-
+  
           // Verifique se as coordenadas já foram adicionadas
           if (!coordenadasAdicionadas[latLngKey]) {
             // Adicione as coordenadas ao objeto rastreador
             coordenadasAdicionadas[latLngKey] = true;
-
+  
+            // Criar um marcador
             const marker = L.marker([markerData.lat, markerData.long]).addTo(map);
-
+  
+            // Associar um evento de clique ao marcador
+            marker.on('click', () => {
+              // Lógica a ser executada quando o marcador é clicado
+              console.log(markerData); // Exemplo: exibir dados do marcador no console
+            });
+  
+            // Atualizar a camada de mapa de calor com os dados do marcador
+            heat.addLatLng([markerData.lat, markerData.long, 20]);
+            
+            // Definir o conteúdo do popup
             marker.bindPopup(`
-            <div style="background-color: #fff; padding: 10px;">
-            <p>${markerData.Register_problem}</p>
-            <p>${markerData.status}</p>
-            <button class="buttonResolv">Resolvido</button>
-            <button class="buttonNoResolv">Não Resolvido</button>
-        </div>
-        <div class="details">
-        <button class="buttonDetails">Detalhes</button>
-        </div>
-        <style>
-        p{
-          text-align: center;
-        }
-        .buttonResolv,
-        .buttonNoResolv {
-            display: inline-block;
-            color: #fff; 
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-        .buttonDetails {
-          color: #fff; 
-          border: none;
-          border-radius: 5px;
-          padding: 10px 20px;
-          cursor: pointer;
-          font-size: 16px;
-          text-align: center;
-          text-decoration: none;
-          transition: background-color 0.3s ease;
-          background-color: #4F4F4F;
-        }
-        .details{
-          display: flex;
-          justify-content: center;
-        }
-        .buttonResolv {
-            background-color: #4CAF50; 
-        }
-        .buttonResolv:hover {
-            background-color: #46a049; 
-        }
-        .buttonNoResolv {
-            background-color: red
-        }
-        .buttonNoResolv:hover {
-            background-color: red 
-        }
-    </style>
+              <div style="background-color: #fff; padding: 10px;">
+                <p>${markerData.Register_problem}</p>
+                <p>${markerData.status}</p>
+                <button class="buttonResolv" id="buttonResolv">Resolvido</button>
+                <button class="buttonNoResolv">Não Resolvido</button>
+              </div>
+              <div class="details">
+                <button class="buttonDetails">Detalhes</button>
+              </div>
+              <style>
+                    p{
+                      text-align: center;
+                    }
+                    .buttonResolv,
+                    .buttonNoResolv {
+                        display: inline-block;
+                        color: #fff; 
+                        border: none;
+                        border-radius: 5px;
+                        padding: 10px 20px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        text-align: center;
+                        text-decoration: none;
+                        transition: background-color 0.3s ease;
+                    }
+                    .buttonDetails {
+                      color: #fff; 
+                      border: none;
+                      border-radius: 5px;
+                      padding: 10px 20px;
+                      cursor: pointer;
+                      font-size: 16px;
+                      text-align: center;
+                      text-decoration: none;
+                      transition: background-color 0.3s ease;
+                      background-color: #4F4F4F;
+                    }
+                    .details{
+                      display: flex;
+                      justify-content: center;
+                    }
+                    .buttonResolv {
+                        background-color: #4CAF50; 
+                    }
+                    .buttonResolv:hover {
+                        background-color: #46a049; 
+                    }
+                    .buttonNoResolv {
+                        background-color: red
+                    }
+                    .buttonNoResolv:hover {
+                        background-color: red 
+                    }
+                </style>
             `);
           } else {
             // As coordenadas já foram adicionadas, aumente a latitude em 200 unidades
             const randomIncrementLat = 0.0010 + Math.random() * 0.0010;
             const randomIncrement = 0.0005 + Math.random() * 0.0005;
             const marker = L.marker([markerData.lat + randomIncrementLat, markerData.long + randomIncrement]).addTo(map);
-
+  
+            // Definir o conteúdo do popup para o novo marcador
             marker.bindPopup(`
-            <div style="background-color: #fff; padding: 10px;">
-            <p>${markerData.Register_problem}</p>
-            <p>${markerData.status}</p>
-            <button class="buttonResolv" (click)="teste()>Resolvido</button>
-            <button class="buttonNoResolv" (click)="teste()>Não Resolvido</button>
-        </div>
-        <div class="details" (click)="teste()>
-        <button class="buttonDetails" (click)="teste()">Detalhes</button>
-        </div>
-      <style>
-      p{
-        text-align: center;
-      }
-      .buttonResolv,
-      .buttonNoResolv {
-          display: inline-block;
-          color: #fff; 
-          border: none;
-          border-radius: 5px;
-          padding: 10px 20px;
-          cursor: pointer;
-          font-size: 16px;
-          text-align: center;
-          text-decoration: none;
-          transition: background-color 0.3s ease;
-      }
-      .buttonDetails {
-        color: #fff; 
-        border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        cursor: pointer;
-        font-size: 16px;
-        text-align: center;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-        background-color: #4F4F4F;
-      }
-      .details{
-        display: flex;
-        justify-content: center;
-      }
-      .buttonResolv {
-          background-color: #4CAF50; 
-      }
-      .buttonResolv:hover {
-          background-color: #46a049; 
-      }
-      .buttonNoResolv {
-          background-color: red
-      }
-      .buttonNoResolv:hover {
-          background-color: red 
-      }
-  </style>
-
+              <div style="background-color: #fff; padding: 10px;">
+                <p>${markerData.Register_problem}</p>
+                <p>${markerData.status}</p>
+                <button class="buttonResolv" id="buttonResolv">Resolvido2</button>
+                <button class="buttonNoResolv">Não Resolvido</button>
+              </div>
+              <div class="details">
+                <button class="buttonDetails">Detalhes</button>
+              </div>
+              <style>
+                    p{
+                      text-align: center;
+                    }
+                    .buttonResolv,
+                    .buttonNoResolv {
+                        display: inline-block;
+                        color: #fff; 
+                        border: none;
+                        border-radius: 5px;
+                        padding: 10px 20px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        text-align: center;
+                        text-decoration: none;
+                        transition: background-color 0.3s ease;
+                    }
+                    .buttonDetails {
+                      color: #fff; 
+                      border: none;
+                      border-radius: 5px;
+                      padding: 10px 20px;
+                      cursor: pointer;
+                      font-size: 16px;
+                      text-align: center;
+                      text-decoration: none;
+                      transition: background-color 0.3s ease;
+                      background-color: #4F4F4F;
+                    }
+                    .details{
+                      display: flex;
+                      justify-content: center;
+                    }
+                    .buttonResolv {
+                        background-color: #4CAF50; 
+                    }
+                    .buttonResolv:hover {
+                        background-color: #46a049; 
+                    }
+                    .buttonNoResolv {
+                        background-color: red
+                    }
+                    .buttonNoResolv:hover {
+                        background-color: red 
+                    }
+                </style>
             `);
           }
         }
       });
     });
   }
+  
+
   // markercity(Lat, Long) {
   //   const map = L.map('map').setView([Lat, Long], 17);
-  //   const coordenadasAdicionadas = new Set();
-  
   //   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   //     attribution: '© OpenStreetMap contributors'
   //   }).addTo(map);
-  
+
+  //   const heat = L.heatLayer([], { radius: 25 }).addTo(map);
+  //   const heatmapData = [
+  //     [-21.2993976, -46.7188515, 5],
+  //     [-21.2993976, -46.7188515, 5] // Exemplo de dado de mapa de calor
+  //     // Adicione mais dados de mapa de calor aqui
+  //   ];
+
+  //   const coordenadasAdicionadas = {}; // Objeto para rastrear coordenadas já adicionadas
+
   //   this.mapsservice.getAllMarkers().subscribe(data => {
   //     data.forEach(markerData => {
+
+  //       // const heatmapData = data.map((item) => [
+  //       //   item.latitude,
+  //       //   item.longitude,
+  //       //   item.intensity,
+  //       // ]);
   //       if (markerData['active'] !== 0) {
   //         const latLngKey = `${markerData.lat}_${markerData.long}`;
-  
-  //         if (!coordenadasAdicionadas.has(latLngKey)) {
-  //           coordenadasAdicionadas.add(latLngKey);
-  
+
+  //         // Verifique se as coordenadas já foram adicionadas
+  //         if (!coordenadasAdicionadas[latLngKey]) {
+  //           // Adicione as coordenadas ao objeto rastreador
+  //           coordenadasAdicionadas[latLngKey] = true;
+
   //           const marker = L.marker([markerData.lat, markerData.long]).addTo(map);
-  //           const popupContent = `
-  //             <button class="buttonResolv" data-marker-info='${JSON.stringify(markerInfo)}'>Resolvido</button>
-  //             <button class="buttonNoResolv" data-marker-info='${JSON.stringify(markerInfo)}'>Não Resolvido</button>
-  //             <button class="buttonDetails" data-marker-info='${JSON.stringify(markerInfo)}'>Detalhes</button>
-  //             <!-- Seu conteúdo de popup aqui -->
-  //           `;
-  
-  //           marker.bindPopup(popupContent);
-  //         }
+
+  //           marker.bindPopup(`
+  //           <div style="background-color: #fff; padding: 10px;">
+  //           <p>${markerData.Register_problem}</p>
+  //           <p>${markerData.status}</p>
+  //           <button class="buttonResolv" id ="buttonResolv" (click)="teste(${markerData})">Resolvido</button>
+  //           <button class="buttonNoResolv">Não Resolvido</button>
+  //       </div>
+  //       <div class="details">
+  //       <button class="buttonDetails">Detalhes</button>
+  //       </div>
+  //       <style>
+  //       p{
+  //         text-align: center;
   //       }
-  //     });
-  
-  //     document.addEventListener('click', (event) => {
-  //       const target = event.target as HTMLElement;
-  //       const markerInfoString = target.getAttribute('data-marker-info');
-  
-  //       if (markerInfoString) {
-  //         const markerInfo = JSON.parse(markerInfoString);
-  
-  //         if (target.classList.contains('buttonResolv')) {
-  //           this.teste(markerInfo);
-  //         } else if (target.classList.contains('buttonNoResolv')) {
-  //           this.teste2(markerInfo);
-  //         } else if (target.classList.contains('buttonDetails')) {
-  //           this.teste3(markerInfo);
-  //         }
+  //       .buttonResolv,
+  //       .buttonNoResolv {
+  //           display: inline-block;
+  //           color: #fff; 
+  //           border: none;
+  //           border-radius: 5px;
+  //           padding: 10px 20px;
+  //           cursor: pointer;
+  //           font-size: 16px;
+  //           text-align: center;
+  //           text-decoration: none;
+  //           transition: background-color 0.3s ease;
+  //       }
+  //       .buttonDetails {
+  //         color: #fff; 
+  //         border: none;
+  //         border-radius: 5px;
+  //         padding: 10px 20px;
+  //         cursor: pointer;
+  //         font-size: 16px;
+  //         text-align: center;
+  //         text-decoration: none;
+  //         transition: background-color 0.3s ease;
+  //         background-color: #4F4F4F;
+  //       }
+  //       .details{
+  //         display: flex;
+  //         justify-content: center;
+  //       }
+  //       .buttonResolv {
+  //           background-color: #4CAF50; 
+  //       }
+  //       .buttonResolv:hover {
+  //           background-color: #46a049; 
+  //       }
+  //       .buttonNoResolv {
+  //           background-color: red
+  //       }
+  //       .buttonNoResolv:hover {
+  //           background-color: red 
+  //       }
+  //   </style>
+  //           `);
+  //         } else {
+  //           // As coordenadas já foram adicionadas, aumente a latitude em 200 unidades
+  //           const randomIncrementLat = 0.0010 + Math.random() * 0.0010;
+  //           const randomIncrement = 0.0005 + Math.random() * 0.0005;
+  //           const marker = L.marker([markerData.lat + randomIncrementLat, markerData.long + randomIncrement]).addTo(map);
+
+  //           marker.bindPopup(`
+  //           <div style="background-color: #fff; padding: 10px;">
+  //           <p>${markerData.Register_problem}</p>
+  //           <p>${markerData.status}</p>
+  //           <button class="buttonResolv" id ="buttonResolve">Resolvido2</button>
+  //           <button class="buttonNoResolv" (click)="teste()>Não Resolvido</button>
+  //                 </div>
+  //                 <div class="details" (click)="teste()>
+  //                 <button class="buttonDetails" (click)="teste()">Detalhes</button>
+  //                 </div>
+  //               <style>
+  //               p{
+  //                 text-align: center;
+  //               }
+  //               .buttonResolv,
+  //               .buttonNoResolv {
+  //                   display: inline-block;
+  //                   color: #fff; 
+  //                   border: none;
+  //                   border-radius: 5px;
+  //                   padding: 10px 20px;
+  //                   cursor: pointer;
+  //                   font-size: 16px;
+  //                   text-align: center;
+  //                   text-decoration: none;
+  //                   transition: background-color 0.3s ease;
+  //               }
+  //               .buttonDetails {
+  //                 color: #fff; 
+  //                 border: none;
+  //                 border-radius: 5px;
+  //                 padding: 10px 20px;
+  //                 cursor: pointer;
+  //                 font-size: 16px;
+  //                 text-align: center;
+  //                 text-decoration: none;
+  //                 transition: background-color 0.3s ease;
+  //                 background-color: #4F4F4F;
+  //               }
+  //               .details{
+  //                 display: flex;
+  //                 justify-content: center;
+  //               }
+  //               .buttonResolv {
+  //                   background-color: #4CAF50; 
+  //               }
+  //               .buttonResolv:hover {
+  //                   background-color: #46a049; 
+  //               }
+  //               .buttonNoResolv {
+  //                   background-color: red
+  //               }
+  //               .buttonNoResolv:hover {
+  //                   background-color: red 
+  //               }
+  //           </style>
+
+  //           `);
+  //             }
   //       }
   //     });
   //   });
   // }
+
+  
   
 
-
+  teste(markerData) {
+    // Aqui você pode acessar os valores do popup do marcador
+    console.log('Registro do problema:', markerData.Register_problem);
+    console.log('Status:', markerData.status);
+  
+    // Faça o que quiser com os valores do popup
+  }
   problem = [
     { 'id': '1', 'name': 'POLUIÇÃO' },
     { 'id': '2', 'name': 'DEGRADAÇÃO' },
@@ -296,8 +429,6 @@ export class MapsComponent {
     { 'id': '3', 'name': 'EM ANDAMENTO' },
     { 'id': '4', 'name': 'OUTRO(S)' }
   ]
-
-
 
   getRandomNumber(min, max) {
     return Math.random() * (max - min) + min;
@@ -328,11 +459,11 @@ export class MapsComponent {
   };
 
   CreateRegister() {
-    console.log('teste', this.auth.user.email);
     let msg = '';
     if (this.register_problem === '' || this.register_problem === undefined || this.register_problem === null) {
       msg += 'O campo <b>Tipo de Problema</b> é obrigatório.<br>';
     }
+    console.log('user', this.auth)
     if (msg !== '') {
       this.toastr.success(msg, 'Atenção!', { enableHtml: true });
     } else {
@@ -343,8 +474,7 @@ export class MapsComponent {
         data['Register_problem'] = this.register_problem;
         data['status'] = this.register_status;
         data['date'] = new Date();
-        data['user'] = this.auth.user.email;
-
+        data['user'] = this.user;
 
         this.registerService.create_register(data).then(resp => {
           this.register_problem = '';
