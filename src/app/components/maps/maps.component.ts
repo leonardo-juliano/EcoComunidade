@@ -38,6 +38,15 @@ export class MapsComponent {
   imageName = 'imageTeste';
   imageFormat = 'image/jpeg';
 
+  //variaveis do detalhes
+  name_problems: string;
+  status_problems: string;
+  date_problems: string;
+  user_problems: string;
+  name_description: string;
+  lat_problem: string;
+  long_problem: string;
+
   selectedFile: File;
   private trigger: Subject<void> = new Subject<void>();
   public webcamImage: WebcamImage = null;
@@ -350,6 +359,14 @@ export class MapsComponent {
   }
 
   problemDetails(markerData) {
+    this.show_details = true;
+    this.name_problems = markerData.data.Register_problem;
+    this.status_problems = markerData.data.status;
+    this.date_problems = markerData.data.date;
+    this.user_problems = markerData.data.user;
+    this.lat_problem = markerData.data.lat;
+    this.long_problem = markerData.data.long;
+
 
   }
   problemNoResolv(markerData) {
@@ -444,7 +461,7 @@ export class MapsComponent {
           this.register_problem = '';
           this.register_status = '';
           this.endForm();
-          this.toastr.success('Cadastrado com sucesso', 'Oops!');
+          this.toastr.success('Cadastrado com sucesso');
           this.getGreenAreas()
         })
           .catch(error => {

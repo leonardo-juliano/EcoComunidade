@@ -1,4 +1,4 @@
-<div class="botao" *ngIf="!show">
+<div class="botao" *ngIf="!show && !show_details">
   <button type="button" class="botao_registrar" id="openPopup" (click)="open()">REGISTRAR</button>
 </div>
 <div id="map"></div>
@@ -10,14 +10,14 @@
     <div class="form-element">
       <div class="row">
         <label for="">Qual o problema ? </label>
-        <select name="" id="register_problem" [(ngModel)] = "register_problem" placeholder='teste'>
+        <select name="" id="register_problem" [(ngModel)]="register_problem" placeholder='teste'>
           <option *ngFor="let s of problem" value="{{s.name}}">{{s.name}}
           </option>
-        </select>        
+        </select>
         <label for="">Descrição detalhada:</label>
         <input type="text" />
         <label for="">Localização:</label>
-        <input type="text" [(ngModel)]="register_lat" value="{{lat}}" disabled>
+        <input type="text" [(ngModel)]="lat_problem" disabled>
 
         <label>Status</label>
         <select name="" id="" [(ngModel)]="register_status">
@@ -41,7 +41,7 @@
           <img [src]="webcamImage.imageAsDataUrl"/>
         </div>
       </div> -->
-      
+
       <button class="botao_registro" (click)="CreateRegister()">REGISTRAR</button>
       <button class="botao_registro" (click)="photoPrint()">TIRAR FOTO</button>
 
@@ -56,18 +56,19 @@
     <h2>Detalhes</h2>
     <div class="form-element">
       <div class="row">
-        <label for="">Qual o problema ? </label>
-        <select name="" id="register_problem" disabled>
-          <option *ngFor="let s of problem" value="{{s.id}}">{{s.name}}</option>
-        </select>        
+        <label for="">Problema: </label>
+        <input type="text"  disabled [(ngModel)]="name_problems"/>
         <label for="">Descrição detalhada:</label>
-        <input type="text" value="{{s.description}}"/>
-        <label>Status</label>        
-        <select name="" id="" [(ngModel)]="register_status">
-          <option value="">- Selecionar -</option>
-          <option *ngFor="let s of status" value="{{s.id}}">{{s.name}}
-          </option>
-        </select>
+        <input type="text" [(ngModel)]="name_description" disabled />
+        <label for="">Localização:</label>
+        <input type="text" [(ngModel)]="name_problems" disabled />
+        <label for="">Data:</label>
+        <input type="text" [(ngModel)]="date_problems" disabled />
+        <label for="">Relator</label>
+        <input type="text" [(ngModel)]="name_problems" disabled />
+        <label>Status</label>
+        <input type="text" [(ngModel)]="name_problems" disabled />
+
       </div>
     </div>
   </div>

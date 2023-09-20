@@ -39,6 +39,20 @@ input {
   z-index: 0; /* Defina o z-index padrão aqui */
 }
 
+.popup_details{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.25);
+  width: 380px;
+  padding: 20px 30px;
+  background-color: #ffffff;
+  box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200ms, transform 0ms ease-in-out 200ms;
+  z-index: 0; /* Defina o z-index padrão aqui */
+}
+
 .open {
   z-index: 10;
 }
@@ -52,6 +66,15 @@ input {
 }
 
 .popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 15px;
+  cursor: pointer;
+  padding-top: 10px;
+}
+
+.popup_details .close-btn{
   position: absolute;
   top: 10px;
   right: 10px;
@@ -85,6 +108,7 @@ input {
 }
 
 .popup .form .form-element input[type="text"],
+.popup_details .form .form-element input[type="text"],
 .popup .form .form-element input[type="select"],
 select {
   margin-top: 5px;
@@ -140,6 +164,12 @@ select {
     transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200ms, transform 0ms ease-in-out 200ms;
     
   }
+  .popup_details {
+    width: 70%; 
+    margin-top: 50px;
+    transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200ms, transform 0ms ease-in-out 200ms;
+    
+  }
   .botao_registrar{
     padding: 20px 20px 20px 20px;
     width: 400px;
@@ -148,17 +178,4 @@ select {
   .botao{
     bottom: 10%;
   }
-}
-
-
-video {
-  width: 100%;
-  max-width: 640px; /* Ajuste o tamanho conforme necessário */
-}
-
-canvas {
-  display: none;
-}
-#videoElement {
-  transform: scaleX(-1);
 }

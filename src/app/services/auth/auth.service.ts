@@ -58,7 +58,6 @@ export class AuthService {
   async signOut() {
     try {
       await this.auth.auth.signOut();
-      this.toastr.success('Usuário Deslogado com sucesso');
     } catch (error) {
       this.toastr.error('Erro ao deslogar');
       this.error = error;
