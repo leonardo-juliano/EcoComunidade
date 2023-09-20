@@ -53,5 +53,5 @@
 
 img {
   max-width: 100%; /* Garantir que a imagem não exceda a largura do container pai */
-  height: auto; /* Manter a proporção original da imagem */
+  height: 150px; /* Manter a proporção original da imagem */
 }

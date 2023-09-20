@@ -11,6 +11,10 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { CityService } from 'src/app/services/city/city.service';
 import 'leaflet.heat';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
+import { Observable, Subject } from 'rxjs';
+
 
 
 @Component({
@@ -30,6 +34,15 @@ export class MapsComponent {
   active = 1;
   currentMarkerData: any;
   user = '';
+  photo = false;
+  imageName = 'imageTeste';
+  imageFormat = 'image/jpeg';
+
+  selectedFile: File;
+  private trigger: Subject<void> = new Subject<void>();
+  public webcamImage: WebcamImage = null;
+
+
 
   show: boolean = false;
   show_details: boolean = false;
@@ -43,7 +56,8 @@ export class MapsComponent {
     private router: Router,
 
     private route: ActivatedRoute,
-    private cityService: CityService) {
+    private cityService: CityService,
+    private storage: AngularFireStorage) {
   }
   ngOnInit(): void {
     this.getGreenAreas();
@@ -85,43 +99,91 @@ export class MapsComponent {
     });
   }
 
+  photoPrint() {
+    this.photo = true;
+  }
+
+  triggerSnapshot(): void {
+    this.trigger.next();
+  }
+
+  // handleImage(webcamImage: WebcamImage): void {
+  //   console.info('Saved webcam image', webcamImage);
+  //   this.webcamImage = webcamImage;
+  //   // this.uploadImageFromURL(this.webcamImage.imageAsDataUrl, 'gs://eco-comunidade.appspot.com/');
+  //   this.handleCapturedImage(webcamImage);
+  // }
+
+  // handleCapturedImage(webcamImage: WebcamImage) {
+  //   this.webcamImage = webcamImage;
+  //   const arr = this.webcamImage.imageAsDataUrl.split(",");
+  //   const mime = arr[0].match(/:(.*?);/)[1];
+  //   const bstr = atob(arr[1]);
+  //   let n = bstr.length;
+  //   const u8arr = new Uint8Array(n);
+  //   while (n--) {
+  //     u8arr[n] = bstr.charCodeAt(n);
+  //   }
+  //   const file: File = new File([u8arr], this.imageName, { type: this.imageFormat })
+  //   console.log(file);  
+  //   this.uploadImageFromURL(file);
+  // }
+
+  // uploadImageFromURL(url) {
+  //   // Crie uma referência para o local no Firebase Storage onde deseja salvar a imagem
+  //   console.log(url)
+  //   const filename = `gs://eco-comunidade.appspot.com`;
+  //   const storageRef = this.storage.ref(filename);
+  //   console.log(storageRef)
+
+  //   // Use o método `putString` para salvar a imagem da URL no Firebase Storage
+  //   fetch(url)
+  //     .then(response => response.blob())
+  //     .then(blob => {
+  //       const file = new File([blob], filename);
+  //       return storageRef.put(file);
+  //     })
+  //     .then(uploadTask => {
+  //       // A imagem foi salva com sucesso no Firebase Storage
+  //       console.log('Imagem salva com sucesso:', uploadTask);
+  //     })
+  //     .catch(error => {
+  //       // Trate qualquer erro que possa ocorrer
+  //       console.error('Erro ao salvar a imagem:', error);
+  //     });
+  // }
+
+  // public get triggerObservable(): Observable<void> {
+  //   return this.trigger.asObservable();
+  // }
+
   markercity(Lat, Long) {
     const map = L.map('map').setView([Lat, Long], 17);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
-  
+
     const heat = L.heatLayer([], { radius: 25 }).addTo(map);
     const coordenadasAdicionadas = {}; // Objeto para rastrear coordenadas já adicionadas
-  
+
     this.mapsservice.getAllMarkers().subscribe(data => {
+      console.log('testeee',data)
       data.forEach(markerData => {
-        if (markerData['active'] !== 0) {
-          const latLngKey = `${markerData.lat}_${markerData.long}`;
-  
-          // Verifique se as coordenadas já foram adicionadas
+        console.log('testeee',markerData)
+        
+
+        if (markerData.data['active'] !== 0) {
+          heat.addLatLng([markerData.data.lat, markerData.data.long, 7]);
+
+          const latLngKey = `${markerData.data.lat}_${markerData.data.long}`;
           if (!coordenadasAdicionadas[latLngKey]) {
-            // Adicione as coordenadas ao objeto rastreador
             coordenadasAdicionadas[latLngKey] = true;
-  
-            // Criar um marcador
-            const marker = L.marker([markerData.lat, markerData.long]).addTo(map);
-  
-            // Associar um evento de clique ao marcador
-            marker.on('click', () => {
-              // Lógica a ser executada quando o marcador é clicado
-              console.log(markerData); // Exemplo: exibir dados do marcador no console
-            });
-  
-            // Atualizar a camada de mapa de calor com os dados do marcador
-            heat.addLatLng([markerData.lat, markerData.long, 20]);
-            
-            // Definir o conteúdo do popup
+            const marker = L.marker([markerData.data.lat, markerData.data.long]).addTo(map);
             marker.bindPopup(`
               <div style="background-color: #fff; padding: 10px;">
-                <p>${markerData.Register_problem}</p>
-                <p>${markerData.status}</p>
-                <button class="buttonResolv" id="buttonResolv">Resolvido</button>
+                <p><strong>Problema: </strong> ${markerData.data.Register_problem}</p>
+                <p><strong>Status: </strong> ${markerData.data.status}</p>
+                <button class="buttonResolv">Resolvido</button>
                 <button class="buttonNoResolv">Não Resolvido</button>
               </div>
               <div class="details">
@@ -174,22 +236,44 @@ export class MapsComponent {
                     }
                 </style>
             `);
+
+            marker.on('click', () => {
+              let markerDetails2 = markerData;
+
+              const popup = marker.getPopup();
+              // Adicione ouvintes de eventos aos botões dentro do popup
+              const buttonResolv = popup.getElement().querySelector('.buttonResolv');
+              const buttonNoResolv = popup.getElement().querySelector('.buttonNoResolv');
+              const buttonDetails = popup.getElement().querySelector('.buttonDetails');
+
+              buttonResolv.addEventListener('click', () => {
+                this.problemResolv(markerDetails2);
+              });
+              buttonNoResolv.addEventListener('click', () => {
+                this.problemNoResolv(markerDetails2);
+              });
+              buttonDetails.addEventListener('click', () => {
+                this.problemDetails(markerDetails2);
+              }
+              );
+            });
           } else {
-            // As coordenadas já foram adicionadas, aumente a latitude em 200 unidades
             const randomIncrementLat = 0.0010 + Math.random() * 0.0010;
             const randomIncrement = 0.0005 + Math.random() * 0.0005;
-            const marker = L.marker([markerData.lat + randomIncrementLat, markerData.long + randomIncrement]).addTo(map);
-  
-            // Definir o conteúdo do popup para o novo marcador
+
+            const marker = L.marker([markerData.data.lat + randomIncrementLat, markerData.data.long + randomIncrement]).addTo(map);
+
+            heat.addLatLng([markerData.data.lat, markerData.data.long, 7]);
+
             marker.bindPopup(`
               <div style="background-color: #fff; padding: 10px;">
-                <p>${markerData.Register_problem}</p>
-                <p>${markerData.status}</p>
-                <button class="buttonResolv" id="buttonResolv">Resolvido2</button>
-                <button class="buttonNoResolv">Não Resolvido</button>
+                <p><strong>Problema: </strong>${markerData.data.Register_problem}</p>
+                <p><strong>Status: </strong>${markerData.data.status}</p>
+                <button class="buttonResolv" id="buttonResolv" (click)="testando()">Resolvido</button>
+                <button class="buttonNoResolv" (click)="testando()">Não Resolvido</button>
               </div>
               <div class="details">
-                <button class="buttonDetails">Detalhes</button>
+                <button class="buttonDetails" (click)="testando()">Detalhes</button>
               </div>
               <style>
                     p{
@@ -238,183 +322,63 @@ export class MapsComponent {
                     }
                 </style>
             `);
+            marker.on('click', () => {
+              console.log(markerData);
+              let markerDetails2 = markerData;
+
+              const popup = marker.getPopup();
+              // Adicione ouvintes de eventos aos botões dentro do popup
+              const buttonResolv = popup.getElement().querySelector('.buttonResolv');
+              const buttonNoResolv = popup.getElement().querySelector('.buttonNoResolv');
+              const buttonDetails = popup.getElement().querySelector('.buttonDetails');
+
+              buttonResolv.addEventListener('click', () => {
+                this.problemResolv(markerDetails2);
+              });
+              buttonNoResolv.addEventListener('click', () => {
+                this.problemNoResolv(markerDetails2);
+              });
+              buttonDetails.addEventListener('click', () => {
+                this.problemDetails(markerDetails2);
+              }
+              );
+            });
           }
         }
       });
     });
   }
-  
 
-  // markercity(Lat, Long) {
-  //   const map = L.map('map').setView([Lat, Long], 17);
-  //   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  //     attribution: '© OpenStreetMap contributors'
-  //   }).addTo(map);
+  problemDetails(markerData) {
 
-  //   const heat = L.heatLayer([], { radius: 25 }).addTo(map);
-  //   const heatmapData = [
-  //     [-21.2993976, -46.7188515, 5],
-  //     [-21.2993976, -46.7188515, 5] // Exemplo de dado de mapa de calor
-  //     // Adicione mais dados de mapa de calor aqui
-  //   ];
-
-  //   const coordenadasAdicionadas = {}; // Objeto para rastrear coordenadas já adicionadas
-
-  //   this.mapsservice.getAllMarkers().subscribe(data => {
-  //     data.forEach(markerData => {
-
-  //       // const heatmapData = data.map((item) => [
-  //       //   item.latitude,
-  //       //   item.longitude,
-  //       //   item.intensity,
-  //       // ]);
-  //       if (markerData['active'] !== 0) {
-  //         const latLngKey = `${markerData.lat}_${markerData.long}`;
-
-  //         // Verifique se as coordenadas já foram adicionadas
-  //         if (!coordenadasAdicionadas[latLngKey]) {
-  //           // Adicione as coordenadas ao objeto rastreador
-  //           coordenadasAdicionadas[latLngKey] = true;
-
-  //           const marker = L.marker([markerData.lat, markerData.long]).addTo(map);
-
-  //           marker.bindPopup(`
-  //           <div style="background-color: #fff; padding: 10px;">
-  //           <p>${markerData.Register_problem}</p>
-  //           <p>${markerData.status}</p>
-  //           <button class="buttonResolv" id ="buttonResolv" (click)="teste(${markerData})">Resolvido</button>
-  //           <button class="buttonNoResolv">Não Resolvido</button>
-  //       </div>
-  //       <div class="details">
-  //       <button class="buttonDetails">Detalhes</button>
-  //       </div>
-  //       <style>
-  //       p{
-  //         text-align: center;
-  //       }
-  //       .buttonResolv,
-  //       .buttonNoResolv {
-  //           display: inline-block;
-  //           color: #fff; 
-  //           border: none;
-  //           border-radius: 5px;
-  //           padding: 10px 20px;
-  //           cursor: pointer;
-  //           font-size: 16px;
-  //           text-align: center;
-  //           text-decoration: none;
-  //           transition: background-color 0.3s ease;
-  //       }
-  //       .buttonDetails {
-  //         color: #fff; 
-  //         border: none;
-  //         border-radius: 5px;
-  //         padding: 10px 20px;
-  //         cursor: pointer;
-  //         font-size: 16px;
-  //         text-align: center;
-  //         text-decoration: none;
-  //         transition: background-color 0.3s ease;
-  //         background-color: #4F4F4F;
-  //       }
-  //       .details{
-  //         display: flex;
-  //         justify-content: center;
-  //       }
-  //       .buttonResolv {
-  //           background-color: #4CAF50; 
-  //       }
-  //       .buttonResolv:hover {
-  //           background-color: #46a049; 
-  //       }
-  //       .buttonNoResolv {
-  //           background-color: red
-  //       }
-  //       .buttonNoResolv:hover {
-  //           background-color: red 
-  //       }
-  //   </style>
-  //           `);
-  //         } else {
-  //           // As coordenadas já foram adicionadas, aumente a latitude em 200 unidades
-  //           const randomIncrementLat = 0.0010 + Math.random() * 0.0010;
-  //           const randomIncrement = 0.0005 + Math.random() * 0.0005;
-  //           const marker = L.marker([markerData.lat + randomIncrementLat, markerData.long + randomIncrement]).addTo(map);
-
-  //           marker.bindPopup(`
-  //           <div style="background-color: #fff; padding: 10px;">
-  //           <p>${markerData.Register_problem}</p>
-  //           <p>${markerData.status}</p>
-  //           <button class="buttonResolv" id ="buttonResolve">Resolvido2</button>
-  //           <button class="buttonNoResolv" (click)="teste()>Não Resolvido</button>
-  //                 </div>
-  //                 <div class="details" (click)="teste()>
-  //                 <button class="buttonDetails" (click)="teste()">Detalhes</button>
-  //                 </div>
-  //               <style>
-  //               p{
-  //                 text-align: center;
-  //               }
-  //               .buttonResolv,
-  //               .buttonNoResolv {
-  //                   display: inline-block;
-  //                   color: #fff; 
-  //                   border: none;
-  //                   border-radius: 5px;
-  //                   padding: 10px 20px;
-  //                   cursor: pointer;
-  //                   font-size: 16px;
-  //                   text-align: center;
-  //                   text-decoration: none;
-  //                   transition: background-color 0.3s ease;
-  //               }
-  //               .buttonDetails {
-  //                 color: #fff; 
-  //                 border: none;
-  //                 border-radius: 5px;
-  //                 padding: 10px 20px;
-  //                 cursor: pointer;
-  //                 font-size: 16px;
-  //                 text-align: center;
-  //                 text-decoration: none;
-  //                 transition: background-color 0.3s ease;
-  //                 background-color: #4F4F4F;
-  //               }
-  //               .details{
-  //                 display: flex;
-  //                 justify-content: center;
-  //               }
-  //               .buttonResolv {
-  //                   background-color: #4CAF50; 
-  //               }
-  //               .buttonResolv:hover {
-  //                   background-color: #46a049; 
-  //               }
-  //               .buttonNoResolv {
-  //                   background-color: red
-  //               }
-  //               .buttonNoResolv:hover {
-  //                   background-color: red 
-  //               }
-  //           </style>
-
-  //           `);
-  //             }
-  //       }
-  //     });
-  //   });
-  // }
-
-  
-  
-
-  teste(markerData) {
-    // Aqui você pode acessar os valores do popup do marcador
-    console.log('Registro do problema:', markerData.Register_problem);
-    console.log('Status:', markerData.status);
-  
-    // Faça o que quiser com os valores do popup
   }
+  problemNoResolv(markerData) {
+
+  }
+
+  problemResolv(markerData) {
+    console.log('entrei')
+    this.registerService.update(markerData.id).then(resp => {
+      this.toastr.success('Atualizado com sucesso', 'Oops!');
+    }
+    )
+      .catch(error => {
+        this.toastr.error('This is error toast.', 'Oops!');
+        console.log(error);
+      });
+  }
+
+
+  handleButtonClick(action: string) {
+    if (action === 'resolvido') {
+      // Lógica quando o botão "Resolvido" é clicado
+      console.log('Marcador resolvido.');
+    } else if (action === 'naoresolvido') {
+      // Lógica quando o botão "Não Resolvido" é clicado
+      console.log('Marcador não resolvido.');
+    }
+  }
+
   problem = [
     { 'id': '1', 'name': 'POLUIÇÃO' },
     { 'id': '2', 'name': 'DEGRADAÇÃO' },

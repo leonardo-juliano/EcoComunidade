@@ -41,9 +41,6 @@ export class UserComponent implements OnInit {
     if (this.phone === undefined || this.phone === null) {
       msg += 'O campo <b>TELEFONE</b> é obrigatório.<br>';
     }
-    if (this.cep === 0 || this.cep === undefined || this.cep === null) {
-      msg += 'O campo <b>CEP</b> é obrigatório.<br>';
-    } 
     if (this.email === '' || this.email === undefined || this.email === null) {
       msg += 'O campo <b>EMAIL</b> é obrigatório.<br>';
     }
@@ -59,7 +56,6 @@ export class UserComponent implements OnInit {
         this.name,
         this.city,
         this.phone,
-        this.cep,
         this.city,
         this.collaborator
       )

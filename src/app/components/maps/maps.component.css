@@ -149,3 +149,16 @@ select {
     bottom: 10%;
   }
 }
+
+
+video {
+  width: 100%;
+  max-width: 640px; /* Ajuste o tamanho conforme necessário */
+}
+
+canvas {
+  display: none;
+}
+#videoElement {
+  transform: scaleX(-1);
+}

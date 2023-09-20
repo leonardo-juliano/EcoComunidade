@@ -21,7 +21,7 @@ export class AuthService {
     private firestore: AngularFirestore,
     private auth: AngularFireAuth,
   ) {}
-  registerUser(email: string, password: string, name: string, address: string, phone: number, cep: number, city: string, collaborator: boolean) {
+  registerUser(email: string, password: string, name: string, address: string, phone: number, city: string, collaborator: boolean) {
     return auth().createUserWithEmailAndPassword(email, password)
       .then(userCredential => {
         const user = userCredential.user;
@@ -31,7 +31,6 @@ export class AuthService {
           name: name,
           address: address,
           phone: phone,
-          cep: cep,
           city: city,
           email: email,
           collaborator: collaborator,

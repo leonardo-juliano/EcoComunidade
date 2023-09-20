@@ -3,6 +3,7 @@ import { CityService } from 'src/app/services/city/city.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 
@@ -17,6 +18,8 @@ export class CityComponent implements OnInit {
     private cityService: CityService,
     private router: Router,
     private toastr: ToastrService,
+    private afAuth: AngularFireAuth,
+
     ) { }
 
   items: any[];
@@ -24,6 +27,8 @@ export class CityComponent implements OnInit {
   cities = [];
   citySelected = '';
   greenSelected = [];
+  latitude: number;
+  longitude: number;
   
   ngOnInit() {
     this.cityService.getGrennAreas().subscribe(data => {
@@ -32,6 +37,14 @@ export class CityComponent implements OnInit {
 
     this.cityService.getCitys().subscribe(data => {
       this.cities = data;
+    });
+
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+      } else {
+        this.toastr.error('Usuário não esta logado');
+        this.router.navigate(['/login']);
+      }
     });
   }
 
@@ -55,9 +68,6 @@ export class CityComponent implements OnInit {
     this.router.navigate(['maps', this.latitude + "," + this.longitude]);
   }
 
-  latitude: number;
-  longitude: number;
-
   getLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -69,5 +79,9 @@ export class CityComponent implements OnInit {
     } else {
       this.toastr.success('Erro ao buscar localização, Verifique a permissão de localização.', 'Oops!');
     }
+  }
+
+  redirect(){
+    this.router.navigate(['/public_area']);
   }
 }

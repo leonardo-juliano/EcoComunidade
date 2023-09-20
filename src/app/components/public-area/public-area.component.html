@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="img_logo">
+      <img src="./../../../assets/img/logo_login.png" alt="">
+    </div>
+    <div class="city">
+      <select (change)="getGrennAreas()" [(ngModel)]="citySelected">
+        <option value=""> - Selecionar Cidade</option>
+        <option *ngFor="let o of cities" [value]="o.code">{{ o.name }} - ( {{o.UF}} )</option>
+      </select>
+      <div [(ngModel)]="greenSelected">
+        <input type="text">
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="btn btn-success" (click)="getLocation()">Buscar minha localização atual</button>
+      <button class="btn btn-success" style="background-color: #F68003; color: #FFFFFF;" (click)="redirect()">Voltar</button>
+    </div>
+  </div>

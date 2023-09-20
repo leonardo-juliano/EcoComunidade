@@ -21,5 +21,11 @@ export class RegisterService {
   getAll(): Observable<any[]> {
     return this.firestore.collection('tasks').valueChanges({ idField: 'customId' });
   }
+  delete(id: string): Promise<void> {
+    return this.firestore.collection('tasks').doc(id).delete();
+  }
+  update(id: string): Promise<void> {
+    return this.firestore.collection('tasks').doc(id).update({active : 0});
+  }
   
 }

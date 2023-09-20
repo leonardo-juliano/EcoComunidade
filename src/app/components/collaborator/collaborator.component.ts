@@ -56,7 +56,6 @@ export class CollaboratorComponent implements OnInit {
         this.name,
         this.city,
         this.phone,
-        this.cep,
         this.city,
         this.collaborator
       )

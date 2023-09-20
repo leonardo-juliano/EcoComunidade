@@ -24,6 +24,9 @@ import { UserComponent } from './components/user/user.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AuthService } from './services/auth/auth.service';
 import { CollaboratorComponent } from './components/collaborator/collaborator.component';
+import { WebcamModule } from 'ngx-webcam';
+import { PublicAreaComponent } from './components/public-area/public-area.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @NgModule({
@@ -36,6 +39,8 @@ import { CollaboratorComponent } from './components/collaborator/collaborator.co
     MapsComponent,
     UserComponent,
     CollaboratorComponent,
+    PublicAreaComponent,
+    ProfileComponent,
     
   ],
   imports: [
@@ -48,6 +53,7 @@ import { CollaboratorComponent } from './components/collaborator/collaborator.co
     AngularFireStorageModule,
     ToastrModule.forRoot ( ),
     FormsModule,
+    WebcamModule,
     RouterModule,
     AngularFireAuthModule,
     AgmCoreModule.forRoot({

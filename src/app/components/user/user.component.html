@@ -4,13 +4,12 @@
   </div>
   <div class="login">
     <input type="text" placeholder="Nome Completo" [(ngModel)]="name">
-    <input type="tel" placeholder="Celular" [(ngModel)]="phone">
-    <input type="text" placeholder="CEP" [(ngModel)]="cep">
+    <input type="tel"  placeholder="Celular" [(ngModel)]="phone">
     <input type="email" placeholder="Email" [(ngModel)]="email">
     <input type="password" placeholder="Senha" [(ngModel)]="password">
     <input type="text" placeholder="Cidade" [(ngModel)]="city">
   </div>
   <div class="buttons">
     <button class="btn btn-success" (click)="register()">Cadastrar</button>
-    <button class="btn btn-success" (click)="redirect()">Entrar</button>
+    <button class="btn btn-success" style="background-color: #F68003; color: #FFFFFF;" (click)="redirect()">Entrar</button>
   </div>

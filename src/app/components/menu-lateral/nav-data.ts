@@ -29,4 +29,9 @@ export const navbarData = [
         icon: 'fa-solid fa-handshake',
         label: 'Colaboradores'
     },
+    {
+        routerLink: '/profile',
+        icon: 'fa-solid fa-user',
+        label: 'Meu Perfil'
+    },
 ]

@@ -11,23 +11,40 @@
       <div class="row">
         <label for="">Qual o problema ? </label>
         <select name="" id="register_problem" [(ngModel)] = "register_problem" placeholder='teste'>
-          <option value="">- Selecionar -</option>
           <option *ngFor="let s of problem" value="{{s.name}}">{{s.name}}
           </option>
         </select>        
         <label for="">Descrição detalhada:</label>
-        <input type="text"/>
+        <input type="text" />
+        <label for="">Localização:</label>
+        <input type="text" [(ngModel)]="register_lat" value="{{lat}}" disabled>
+
         <label>Status</label>
         <select name="" id="" [(ngModel)]="register_status">
-          <option value="">- Selecionar -</option>
           <option *ngFor="let s of status" value="{{s.name}}">{{s.name}}
           </option>
         </select>
-        <input type="file" (change)="handleFileInput($event)">
+        <!-- <input type="file" (change)="handleFileInput($event)"> -->
       </div>
-      <!-- <video #videoElement autoplay></video> -->
-      <button class="botao_registro" (click)="CreateRegister()">TIRAR FOTO</button>
+      <!-- <div *ngIf="photo">
+        <webcam [height]="250" 
+                [width]="250" 
+                [trigger]="triggerObservable"
+                (imageCapture)="handleImage($event)">
+         </webcam>
+          
+        <button class="actionBtn" (click)="triggerSnapshot();">
+            Foto salva</button>
+          
+        <div class="snapshot" *ngIf="webcamImage">
+          <h2>olha ai cabaço</h2>
+          <img [src]="webcamImage.imageAsDataUrl"/>
+        </div>
+      </div> -->
+      
       <button class="botao_registro" (click)="CreateRegister()">REGISTRAR</button>
+      <button class="botao_registro" (click)="photoPrint()">TIRAR FOTO</button>
+
     </div>
   </div>
 </div>
@@ -45,7 +62,7 @@
         </select>        
         <label for="">Descrição detalhada:</label>
         <input type="text" value="{{s.description}}"/>
-        <label>Status</label>
+        <label>Status</label>        
         <select name="" id="" [(ngModel)]="register_status">
           <option value="">- Selecionar -</option>
           <option *ngFor="let s of status" value="{{s.id}}">{{s.name}}
