@@ -16,4 +16,8 @@ export class CityService {
   getCitys(): Observable<any[]> {
     return this.firestore.collection('city').valueChanges();
   }
+
+  createGreenArea(greenArea: any): Promise<any> {
+    return this.firestore.collection('green_area').add(greenArea);
+  }
 }

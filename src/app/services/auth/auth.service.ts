@@ -37,6 +37,28 @@ export class AuthService {
         });
       });
   }
+  registerUserCollaborator(email: string, password: string, name: string, address: string, phone: number, city: string, collaborator: boolean, user_services: string, selectedService: any) {
+    return auth().createUserWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        const user = userCredential.user;
+  
+        // Salvar informações adicionais no Firestore
+        return this.firestore.collection('users').doc(user.uid).set({
+          name: name,
+          address: address,
+          phone: phone,
+          city: city,
+          email: email,
+          collaborator: collaborator,
+          user_services: user_services,
+          selectedService: selectedService,
+        });
+      });
+  }
+
+  getUid() {
+    return this.auth.auth.currentUser.uid;
+  }
 
 
 

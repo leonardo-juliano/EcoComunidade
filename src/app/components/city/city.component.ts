@@ -27,8 +27,8 @@ export class CityComponent implements OnInit {
   cities = [];
   citySelected = '';
   greenSelected = [];
-  latitude: number;
-  longitude: number;
+  lat: number;
+  long: number;
   
   ngOnInit() {
     this.cityService.getGrennAreas().subscribe(data => {
@@ -65,14 +65,14 @@ export class CityComponent implements OnInit {
   }
 
   sendParam2() {
-    this.router.navigate(['maps', this.latitude + "," + this.longitude]);
+    this.router.navigate(['maps', this.lat + "," + this.long]);
   }
 
   getLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
+        this.lat = position.coords.latitude;
+        this.long = position.coords.longitude;
         this.sendParam2()
         this.toastr.success('Localização feita com sucesso !', 'Ebaa!');
       });

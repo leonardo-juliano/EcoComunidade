@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,9 +12,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+  user = '';
+
+  constructor(
+    private toastr: ToastrService,
+    private authService: AuthService,
+    private router: Router,
+    private profileService: ProfileService,
+    private afAuth: AngularFireAuth,
+  ) { }
 
   ngOnInit() {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.user = user.email
+        console.log(this.user);
+        this.getUser();
+      }
+    });
   }
 
+  getUser() {
+    console.log(this.user);
+    this.profileService.buscarUsuarioPorEmail(this.user)
+      .subscribe(data => {
+        console.log(data);
+      });
+  }
 }

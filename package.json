@@ -31,7 +31,7 @@
     "firebase": "^7.24.0",
     "leaflet": "^1.9.4",
     "leaflet.heat": "^0.2.0",
-    "ng-multiselect-dropdown": "^1.0.0",
+    "ng-multiselect-dropdown": "^0.2.14",
     "ng6-toastr-notifications": "^1.0.4",
     "ngx-toastr": "^11.3.3",
     "ngx-webcam": "^0.2.6",

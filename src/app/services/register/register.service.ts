@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RegisterService {
+  storage: any;
 
   constructor(
     private firestore: AngularFirestore
@@ -26,6 +27,9 @@ export class RegisterService {
   }
   update(id: string): Promise<void> {
     return this.firestore.collection('tasks').doc(id).update({active : 0});
+  }
+  getImageUrl(path: string) {
+    return this.storage.ref(path).getDownloadURL();
   }
   
 }

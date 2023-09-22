@@ -36,7 +36,7 @@ export class MenuLateralComponent implements OnInit {
   }
 
   getRouter() {
-    if (this.rotaAtual == '/login' || this.rotaAtual == '/user' || this.rotaAtual == '/city' || this.rotaAtual == '/collaborator' || this.rotaAtual == '/public_area') {
+    if (this.rotaAtual == '/login' || this.rotaAtual == '/user' || this.rotaAtual == '/city' || this.rotaAtual == '/collaborator' || this.rotaAtual == '/public_area' || this.rotaAtual == '/') {
       this.showMenu = false;
     }else{
       this.showMenu = true;

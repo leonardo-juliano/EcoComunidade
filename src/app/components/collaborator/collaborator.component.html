@@ -1,16 +1,24 @@
 <div class="container">
-    <div class="img_logo">
-      <img src="./../../../assets/img/logo_login.png" alt="">
-    </div>
-    <div class="login">
-      <input type="text" placeholder="Nome Completo" [(ngModel)]="name">
-      <input type="tel" placeholder="Celular" [(ngModel)]="phone">
-      <input type="email" placeholder="Email" [(ngModel)]="email">
-      <input type="password" placeholder="Senha" [(ngModel)]="password">
-      <input type="text" placeholder="Cidade" [(ngModel)]="city">
+  <div class="img_logo">
+    <img src="./../../../assets/img/logo_login.png" alt="">
+  </div>
+  <div class="login">
+    <input type="text" placeholder="Nome Completo" [(ngModel)]="name">
+    <input type="tel" placeholder="Celular" [(ngModel)]="phone">
+    <input type="email" placeholder="Email" [(ngModel)]="email">
+    <input type="password" placeholder="Senha" [(ngModel)]="password">
+    <input type="text" placeholder="Cidade" [(ngModel)]="city">
+    <!-- <select name="" id="" [(ngModel)]="user_services">
+      <option *ngFor="let s of services" value="{{s.name}}">{{s.name}}
+      </option>
+    </select> -->
+    <ng-multiselect-dropdown [placeholder]="'Serviços prestados:'" [data]="dropdownList" [(ngModel)]="selectedItems"
+      [settings]="dropdownSettings" [(ngModel)]="selectedService">
+    </ng-multiselect-dropdown>
 
-    </div>
-    <div class="buttons">
-      <button class="btn btn-success" (click)="register()">Cadastrar</button>
-      <button class="btn btn-success" (click)="redirect()">Entrar</button>
-    </div>
+  </div>
+  <div class="buttons">
+    <button class="btn btn-success" (click)="register()">Cadastrar</button>
+    <button class="btn btn-success" style="background-color: #F68003; color: #FFFFFF;" (click)="redirect()">Voltar</button>
+
+  </div>

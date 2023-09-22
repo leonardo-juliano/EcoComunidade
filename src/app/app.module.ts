@@ -13,6 +13,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { MapsComponent } from './components/maps/maps.component';
 import { ToastrModule } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 
 
 import { environment } from '../environments/environment';
@@ -49,6 +51,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     BrowserAnimationsModule,
+    NgMultiSelectDropDownModule.forRoot(),
     AngularFireDatabaseModule,
     AngularFireStorageModule,
     ToastrModule.forRoot ( ),

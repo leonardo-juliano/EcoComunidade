@@ -140,4 +140,9 @@
   .sidenav-collapsed {
     width: 5rem;
   }
+
+  .sidenav-nav-item-exit {
+    position: fixed;
+    bottom: 0;
+  }
 }

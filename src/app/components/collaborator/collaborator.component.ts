@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
+import {  IDropdownSettings } from 'ng-multiselect-dropdown';
+
 
 @Component({
   selector: 'app-collaborator',
@@ -18,6 +20,12 @@ export class CollaboratorComponent implements OnInit {
   cep: number;
   city: string = '';
   collaborator= true;
+  selectedService = [];
+
+dropdownList = [];
+  selectedItems = [];
+  dropdownSettings = {};
+  user_services = 'Todos';
 
 
   constructor(
@@ -27,7 +35,39 @@ export class CollaboratorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.dropdownList = [
+      { item_id: 1, item_text: 'VOLUNTÁRIO' },
+      { item_id: 2, item_text: 'JARDINEIRO' },
+      { item_id: 3, item_text: 'LIMPEZA' },
+      { item_id: 4, item_text: 'RECICLAGEM' },
+      { item_id: 5, item_text: 'OUTRO(S)' }
+    ];
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Todos',
+      unSelectAllText: 'Selecionar Serviços',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
   }
+
+  // onItemSelect(item: any) {
+  //   console.log(item);
+  // }
+  // onSelectAll(items: any) {
+  //   console.log(items);
+  // }
+
+  services = [
+    { 'id': '1', 'name': 'VOLUNTÁRIO' },
+    { 'id': '2', 'name': 'JARDINEIRO' },
+    { 'id': '3', 'name': 'LIMPEZA' },
+    { 'id': '4', 'name': 'RECICLAGEM' },
+    { 'id': '5', 'name': 'OUTRO(S)' }
+  ];
+
 
   redirect(){
     this.router.navigate(['/login']);
@@ -35,6 +75,7 @@ export class CollaboratorComponent implements OnInit {
 
   register() {
     let msg = '';
+    console.log(this.selectedService)
     if (this.name === '' || this.name === undefined || this.name === null) {
       msg += 'O campo <b>NOME</b> é obrigatório.<br>';
     }
@@ -50,14 +91,16 @@ export class CollaboratorComponent implements OnInit {
     if (msg !== '') {
       this.toastr.warning(msg, 'Atenção!', { enableHtml: true });
     } else {
-      this.authService.registerUser(
+      this.authService.registerUserCollaborator(
         this.email,
         this.password,
         this.name,
         this.city,
         this.phone,
         this.city,
-        this.collaborator
+        this.collaborator,
+        this.user_services,
+        this.selectedService
       )
         .then(() => {
           this.toastr.success('Usuário registrado com sucesso!');

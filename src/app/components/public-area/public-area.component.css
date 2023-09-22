@@ -26,7 +26,15 @@
     width: 100%; /* Ocupar toda a largura do container */
     max-width: 300px; /* Largura máxima para evitar que fique muito largo em telas grandes */
   }
-  
+  input {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%; /* Ocupar toda a largura do container */
+    max-width: 300px; /* Largura máxima para evitar que fique muito largo em telas grandes */
+  }
+
   .buttons {
     margin-top: 20px;
     display: flex;

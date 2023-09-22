@@ -14,9 +14,10 @@ export class PublicAreaComponent implements OnInit {
   greenAreas = [];
   cities = [];
   citySelected = '';
-  greenSelected = [];
-  latitude: number;
-  longitude: number;
+  name = '';
+  adress = '';
+  latitude = 0;
+  longitude = 0;
 
   constructor(
     private cityService: CityService,
@@ -31,13 +32,13 @@ export class PublicAreaComponent implements OnInit {
     });
   }
 
-  getGrennAreas() {
-    this.cityService.getGrennAreas().subscribe(data => {
-      this.greenAreas = data;
-    });
+  // getGrennAreas() {
+  //   this.cityService.getGrennAreas().subscribe(data => {
+  //     this.greenAreas = data;
+  //   });
 
-    this.greenSelected = this.greenAreas.filter(green => green.city == this.citySelected);
-  }
+  //   this.greenSelected = this.greenAreas.filter(green => green.city == this.citySelected);
+  // }
 
   getLocation() {
     if ('geolocation' in navigator) {
@@ -48,6 +49,39 @@ export class PublicAreaComponent implements OnInit {
       });
     } else {
       this.toastr.success('Erro ao buscar localização, Verifique a permissão de localização.', 'Oops!');
+    }
+  }
+
+  registerGreenArea() {
+    let msg = '';
+    if (this.citySelected == '') {
+      msg += 'Selecione uma cidade';
+    }
+    if (this.name == '') {
+      msg += 'Informe o nome da área verde pública';
+    }
+    if (this.adress == '') {
+      msg += 'Informe um endereço.';
+    }
+    if (msg === '') {
+      if(this.latitude == 0 || this.longitude == 0){
+        this.toastr.warning('Área verde pública terá que ser aceita por um dos colaboradores', 'Oops!');
+      }
+    this.cityService.createGreenArea({
+      code : Math.floor(Math.random() * 10000),
+      city: this.citySelected,
+      name: this.name,
+      adress: this.adress,
+      lat: this.latitude,
+      long: this.longitude
+    }).then(() => {
+      this.toastr.success('Área verde cadastrada com sucesso !', 'Ebaa!');
+      this.redirect();
+    }).catch(() => {
+      this.toastr.error('Erro ao cadastrar área verde, tente novamente mais tarde.', 'Oops!');
+    });
+    } else {
+      this.toastr.warning(msg, 'Verificar os seguintes campos!');
     }
   }
 

@@ -26,6 +26,22 @@
   width: 100%; 
   max-width: 300px; 
 }
+select{
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%; 
+  max-width: 300px; 
+}
+ng-multiselect-dropdown{
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%; 
+  max-width: 300px; 
+}
 
 .buttons {
   margin-top: 20px;
@@ -53,5 +69,5 @@
 
 img {
   max-width: 100%; 
-  height: 200px; 
+  height: 150px; 
 }

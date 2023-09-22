@@ -51,6 +51,9 @@ input {
   border-radius: 10px;
   transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200ms, transform 0ms ease-in-out 200ms;
   z-index: 0; /* Defina o z-index padrão aqui */
+  max-height: 80vh; /* Defina a altura máxima desejada (porcentagem da altura da janela) */
+  overflow-y: auto; /* Adicione uma barra de rolagem vertical quando necessário */
+
 }
 
 .open {
@@ -160,22 +163,37 @@ select {
 @media screen and (max-width: 844px) {
   .popup {
     width: 70%; 
-    margin-top: 50px;
+    margin-top: 30px;
     transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200ms, transform 0ms ease-in-out 200ms;
     
   }
   .popup_details {
     width: 70%; 
-    margin-top: 50px;
+    margin-top: 30px;
     transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200ms, transform 0ms ease-in-out 200ms;
+    max-height: 60vh; /* Defina a altura máxima desejada (porcentagem da altura da janela) */
+    overflow-y: auto; /* Adicione uma barra de rolagem vertical quando necessário */
     
   }
   .botao_registrar{
-    padding: 20px 20px 20px 20px;
-    width: 400px;
+    width: 100%;
     height: 40px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: #00C88E;
+    color: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
   }
   .botao{
-    bottom: 10%;
+    bottom: 20%;
+    height: auto;
+    left: 10%;
+    right: 10%;
+    opacity: 1;
+    display: flex;
   }
+
 }

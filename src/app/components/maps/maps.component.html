@@ -10,20 +10,25 @@
     <div class="form-element">
       <div class="row">
         <label for="">Qual o problema ? </label>
-        <select name="" id="register_problem" [(ngModel)]="register_problem" placeholder='teste'>
+        <select name="" id="register_problem" [(ngModel)]="register_problem">
           <option *ngFor="let s of problem" value="{{s.name}}">{{s.name}}
           </option>
         </select>
         <label for="">Descrição detalhada:</label>
-        <input type="text" />
+        <input type="text" [(ngModel)]="description_problem" />
         <label for="">Localização:</label>
-        <input type="text" [(ngModel)]="lat_problem" disabled>
+        <input type="text" [(ngModel)]="greenActive" disabled>
+        <form (ngSubmit)="uploadImage()" #imageForm="ngForm">
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+          <button class="botao_registro" (click)="CreateRegister()">REGISTRAR</button>
+        </form>
+        
 
-        <label>Status</label>
+        <!-- <label>Status</label>
         <select name="" id="" [(ngModel)]="register_status">
           <option *ngFor="let s of status" value="{{s.name}}">{{s.name}}
           </option>
-        </select>
+        </select> -->
         <!-- <input type="file" (change)="handleFileInput($event)"> -->
       </div>
       <!-- <div *ngIf="photo">
@@ -42,8 +47,7 @@
         </div>
       </div> -->
 
-      <button class="botao_registro" (click)="CreateRegister()">REGISTRAR</button>
-      <button class="botao_registro" (click)="photoPrint()">TIRAR FOTO</button>
+      <!-- <button class="botao_registro" (click)="photoPrint()">TIRAR FOTO</button> -->
 
     </div>
   </div>
@@ -56,19 +60,22 @@
     <h2>Detalhes</h2>
     <div class="form-element">
       <div class="row">
+        <!-- <img [src]="imageSrc | async" alt="Minha Imagem" /> -->
         <label for="">Problema: </label>
         <input type="text"  disabled [(ngModel)]="name_problems"/>
         <label for="">Descrição detalhada:</label>
-        <input type="text" [(ngModel)]="name_description" disabled />
+        <input type="text" [(ngModel)]="description_details" disabled />
         <label for="">Localização:</label>
         <input type="text" [(ngModel)]="name_problems" disabled />
         <label for="">Data:</label>
-        <input type="text" [(ngModel)]="date_problems" disabled />
-        <label for="">Relator</label>
-        <input type="text" [(ngModel)]="name_problems" disabled />
+        <input type="text" [(ngModel)]="dataFormatada" disabled />
         <label>Status</label>
-        <input type="text" [(ngModel)]="name_problems" disabled />
-
+        <select name="" id="" [(ngModel)]="name_status">
+          <option *ngFor="let s of status" value="{{s.name}}">{{s.name}}
+          </option>
+        </select>
+        <img [src]="imageUrl" alt="Imagem Firebase">
+        <button class="botao_registro" (click)="updateStatus()">ATUALIZAR</button>
       </div>
     </div>
   </div>

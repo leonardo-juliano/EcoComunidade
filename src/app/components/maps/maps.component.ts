@@ -2,6 +2,8 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { MouseEvent } from '@agm/core';
 import { RegisterService } from '../../services/register/register.service';
 import { ToastrService } from 'ngx-toastr';
+import { Location } from '@angular/common';
+
 
 import * as L from 'leaflet';
 import { MapService } from 'src/app/services/map/map.service';
@@ -32,26 +34,38 @@ export class MapsComponent {
   lat = 0;
   long = 0;
   active = 1;
+  greenActive = '';
   currentMarkerData: any;
   user = '';
   photo = false;
   imageName = 'imageTeste';
   imageFormat = 'image/jpeg';
+  dataFormatada = '';
 
   //variaveis do detalhes
   name_problems: string;
+  description_details: string;
   status_problems: string;
   date_problems: string;
   user_problems: string;
-  name_description: string;
+  description_problem: string;
   lat_problem: string;
   long_problem: string;
+
+  imageUrl: string;
+
+  map: any;
+
+  selectedImage: File | null = null;
+
 
   selectedFile: File;
   private trigger: Subject<void> = new Subject<void>();
   public webcamImage: WebcamImage = null;
+  imageUrls: string[] = [];
 
 
+  imageSrc: Observable<string | null>;
 
   show: boolean = false;
   show_details: boolean = false;
@@ -66,7 +80,13 @@ export class MapsComponent {
 
     private route: ActivatedRoute,
     private cityService: CityService,
-    private storage: AngularFireStorage) {
+    private locations: Location,
+    private storage: AngularFireStorage,) {
+    // this.loadImages();
+    // const imagePath = '/images/Capturar-removebg-preview (1).png'; // O caminho da imagem no Firebase Storage
+    // const imageRef = this.storage.ref(imagePath);
+    // this.imageSrc = imageRef.getDownloadURL(); // Obtém o URL de download da imagem
+
   }
   ngOnInit(): void {
     this.getGreenAreas();
@@ -87,8 +107,29 @@ export class MapsComponent {
     this.route.params.subscribe((params) => {
       this.parametro = params['id'];
     });
+    const imagePath = 'gs://eco-comunidade.appspot.com/images/16953520157182170911817861569941.jpg' ;
+    this.registerService.getImageUrl(imagePath).subscribe((url) => {
+      this.imageUrl = 'gs://eco-comunidade.appspot.com/images/16953520157182170911817861569941.jpg';
+    });
   }
 
+
+
+  onFileSelected(event: any): void {
+    this.selectedImage = event.target.files[0];
+  }
+
+  uploadImage(): void {
+    if (this.selectedImage) {
+      const filePath = `/images/${this.selectedImage.name}`;
+      const fileRef = this.storage.ref(filePath);
+      this.storage.upload(filePath, this.selectedImage).then(() => {
+        console.log('Imagem enviada com sucesso!');
+      });
+    } else {
+      console.error('Nenhuma imagem selecionada.');
+    }
+  }
 
   getGreenAreas() {
     this.cityService.getGrennAreas().subscribe(data => {
@@ -99,7 +140,8 @@ export class MapsComponent {
         this.long = Number(latLong[1]);
         this.markercity(this.lat, this.long)
       } else {
-        this.greenAreasRouter = this.greenAreasRouter.filter(green => green.city == this.parametro);
+        this.greenAreasRouter = this.greenAreasRouter.filter(green => green.code == this.parametro);
+        this.greenActive = this.greenAreasRouter[0].name;
         this.lat = this.greenAreasRouter[0].lat;
         this.long = this.greenAreasRouter[0].long;
         this.markercity(this.lat, this.long)
@@ -173,21 +215,19 @@ export class MapsComponent {
     }).addTo(map);
 
     const heat = L.heatLayer([], { radius: 25 }).addTo(map);
-    const coordenadasAdicionadas = {}; // Objeto para rastrear coordenadas já adicionadas
+    const coordenadasAdicionadas = {};
 
     this.mapsservice.getAllMarkers().subscribe(data => {
-      console.log('testeee',data)
       data.forEach(markerData => {
-        console.log('testeee',markerData)
-        
-
         if (markerData.data['active'] !== 0) {
-          heat.addLatLng([markerData.data.lat, markerData.data.long, 7]);
-
           const latLngKey = `${markerData.data.lat}_${markerData.data.long}`;
           if (!coordenadasAdicionadas[latLngKey]) {
             coordenadasAdicionadas[latLngKey] = true;
             const marker = L.marker([markerData.data.lat, markerData.data.long]).addTo(map);
+            heat.addLatLng([markerData.data.lat, markerData.data.long, 2]);
+            console.log('teste aqui', markerData.data)
+
+
             marker.bindPopup(`
               <div style="background-color: #fff; padding: 10px;">
                 <p><strong>Problema: </strong> ${markerData.data.Register_problem}</p>
@@ -250,7 +290,6 @@ export class MapsComponent {
               let markerDetails2 = markerData;
 
               const popup = marker.getPopup();
-              // Adicione ouvintes de eventos aos botões dentro do popup
               const buttonResolv = popup.getElement().querySelector('.buttonResolv');
               const buttonNoResolv = popup.getElement().querySelector('.buttonNoResolv');
               const buttonDetails = popup.getElement().querySelector('.buttonDetails');
@@ -262,17 +301,22 @@ export class MapsComponent {
                 this.problemNoResolv(markerDetails2);
               });
               buttonDetails.addEventListener('click', () => {
+                console.log(markerDetails2);
+                const date = markerDetails2.data.date.toDate();
+                this.dataFormatada = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+            
+                console.log(this.dataFormatada);
                 this.problemDetails(markerDetails2);
               }
               );
             });
           } else {
-            const randomIncrementLat = 0.0010 + Math.random() * 0.0010;
-            const randomIncrement = 0.0005 + Math.random() * 0.0005;
-
+            const randomIncrementLat = 0.0001 + Math.random() * 0.0001;
+            const randomIncrement = 0.0001 + Math.random() * 0.0001;
             const marker = L.marker([markerData.data.lat + randomIncrementLat, markerData.data.long + randomIncrement]).addTo(map);
+            heat.addLatLng([markerData.data.lat, markerData.data.long, 4]);
 
-            heat.addLatLng([markerData.data.lat, markerData.data.long, 7]);
+            console.log('teste aqui', markerData.data)
 
             marker.bindPopup(`
               <div style="background-color: #fff; padding: 10px;">
@@ -332,7 +376,6 @@ export class MapsComponent {
                 </style>
             `);
             marker.on('click', () => {
-              console.log(markerData);
               let markerDetails2 = markerData;
 
               const popup = marker.getPopup();
@@ -361,22 +404,39 @@ export class MapsComponent {
   problemDetails(markerData) {
     this.show_details = true;
     this.name_problems = markerData.data.Register_problem;
+    this.description_details = markerData.data.description;
     this.status_problems = markerData.data.status;
     this.date_problems = markerData.data.date;
     this.user_problems = markerData.data.user;
     this.lat_problem = markerData.data.lat;
     this.long_problem = markerData.data.long;
-
-
+    // if(markerData.data.image){
+    //   const imagePath = 'gs://eco-comunidade.appspot.com/images/' + markerData.data.image;
+    //   console.log(imagePath)
+    //   this.registerService.getImageUrl(imagePath).subscribe((url) => {
+    //     this.imageUrl = 'gs://eco-comunidade.appspot.com/images/' + markerData.data.image;
+    //   })
+    // }
   }
+
+  // loadImages() {
+  //   // Chame o serviço para obter as URLs das imagens no Firebase Storage
+  //   this.registerService.getDownloadURL('/image/').subscribe((url) => {
+  //     if (url) {
+  //       this.imageUrls.push(url);
+  //     }
+  //   });
+  // }
   problemNoResolv(markerData) {
+
+    this.toastr.warning('Obrigado pelo Feedback.', 'Vamos colocar em nossa lista de prioridades !');
 
   }
 
   problemResolv(markerData) {
-    console.log('entrei')
     this.registerService.update(markerData.id).then(resp => {
-      this.toastr.success('Atualizado com sucesso', 'Oops!');
+      this.toastr.success('Atualizado com sucesso', 'Obrigado por resolver o problema !');
+      this.reloadPage();
     }
     )
       .catch(error => {
@@ -385,23 +445,18 @@ export class MapsComponent {
       });
   }
 
-
-  handleButtonClick(action: string) {
-    if (action === 'resolvido') {
-      // Lógica quando o botão "Resolvido" é clicado
-      console.log('Marcador resolvido.');
-    } else if (action === 'naoresolvido') {
-      // Lógica quando o botão "Não Resolvido" é clicado
-      console.log('Marcador não resolvido.');
-    }
+  reloadPage() {
+    this.locations.go(this.locations.path());
   }
 
   problem = [
     { 'id': '1', 'name': 'POLUIÇÃO' },
     { 'id': '2', 'name': 'DEGRADAÇÃO' },
     { 'id': '3', 'name': 'LIXO E DESCARTE INADEQUADO DE LIXO' },
-    { 'id': '4', 'name': 'BANCO QUEBRADO' },
-    { 'id': '5', 'name': 'OUTRO(S)' }
+    { 'id': '4', 'name': 'FOGO' },
+    { 'id': '5', 'name': 'ACESSIBILIDADE' },
+    { 'id': '6', 'name': 'MANUTENÇÃO' },
+    { 'id': '7', 'name': 'OUTRO(S)' }
   ]
 
   status = [
@@ -415,10 +470,14 @@ export class MapsComponent {
     return Math.random() * (max - min) + min;
   }
 
-  map: any;
 
   details(marker_data) {
-    console.log(marker_data);
+    console.log(marker_data)
+    const date = marker_data.data.date.toDate();
+    this.dataFormatada = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+
+    console.log(this.dataFormatada);
+
     this.open_details();
     this.end_details();
   }
@@ -453,13 +512,22 @@ export class MapsComponent {
         data['lat'] = this.lat;
         data['long'] = this.long;
         data['Register_problem'] = this.register_problem;
-        data['status'] = this.register_status;
         data['date'] = new Date();
         data['user'] = this.user;
+        data['description'] = this.description_problem
+        if(this.greenActive){
+          data['greenArea'] = this.greenActive;
+        }
+        data['status'] = 'PENDENTE';
+        if(this.selectedImage){
+          data['image'] = this.selectedImage.name;
+        }
 
         this.registerService.create_register(data).then(resp => {
           this.register_problem = '';
           this.register_status = '';
+          this.description_problem = '';
+          
           this.endForm();
           this.toastr.success('Cadastrado com sucesso');
           this.getGreenAreas()

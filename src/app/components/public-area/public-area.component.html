@@ -3,16 +3,18 @@
       <img src="./../../../assets/img/logo_login.png" alt="">
     </div>
     <div class="city">
-      <select (change)="getGrennAreas()" [(ngModel)]="citySelected">
+      <select [(ngModel)]="citySelected">
         <option value=""> - Selecionar Cidade</option>
         <option *ngFor="let o of cities" [value]="o.code">{{ o.name }} - ( {{o.UF}} )</option>
       </select>
-      <div [(ngModel)]="greenSelected">
-        <input type="text">
-      </div>
+        <input type="text" [(ngModel)]="name" placeholder="Área verde Pública">
+        <input type="text" [(ngModel)]="adress" placeholder="Endereço" *ngIf="latitude === 0">
+
     </div>
     <div class="buttons">
+      <button class="btn btn-success" (click)="registerGreenArea()">Cadastrar</button>
       <button class="btn btn-success" (click)="getLocation()">Buscar minha localização atual</button>
       <button class="btn btn-success" style="background-color: #F68003; color: #FFFFFF;" (click)="redirect()">Voltar</button>
+
     </div>
   </div>
