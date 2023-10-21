@@ -107,7 +107,7 @@ export class MapsComponent {
     this.route.params.subscribe((params) => {
       this.parametro = params['id'];
     });
-    const imagePath = 'gs://eco-comunidade.appspot.com/images/16953520157182170911817861569941.jpg' ;
+    const imagePath = 'gs://eco-comunidade.appspot.com/images/16953520157182170911817861569941.jpg';
     this.registerService.getImageUrl(imagePath).subscribe((url) => {
       this.imageUrl = 'gs://eco-comunidade.appspot.com/images/16953520157182170911817861569941.jpg';
     });
@@ -158,56 +158,6 @@ export class MapsComponent {
     this.trigger.next();
   }
 
-  // handleImage(webcamImage: WebcamImage): void {
-  //   console.info('Saved webcam image', webcamImage);
-  //   this.webcamImage = webcamImage;
-  //   // this.uploadImageFromURL(this.webcamImage.imageAsDataUrl, 'gs://eco-comunidade.appspot.com/');
-  //   this.handleCapturedImage(webcamImage);
-  // }
-
-  // handleCapturedImage(webcamImage: WebcamImage) {
-  //   this.webcamImage = webcamImage;
-  //   const arr = this.webcamImage.imageAsDataUrl.split(",");
-  //   const mime = arr[0].match(/:(.*?);/)[1];
-  //   const bstr = atob(arr[1]);
-  //   let n = bstr.length;
-  //   const u8arr = new Uint8Array(n);
-  //   while (n--) {
-  //     u8arr[n] = bstr.charCodeAt(n);
-  //   }
-  //   const file: File = new File([u8arr], this.imageName, { type: this.imageFormat })
-  //   console.log(file);  
-  //   this.uploadImageFromURL(file);
-  // }
-
-  // uploadImageFromURL(url) {
-  //   // Crie uma referência para o local no Firebase Storage onde deseja salvar a imagem
-  //   console.log(url)
-  //   const filename = `gs://eco-comunidade.appspot.com`;
-  //   const storageRef = this.storage.ref(filename);
-  //   console.log(storageRef)
-
-  //   // Use o método `putString` para salvar a imagem da URL no Firebase Storage
-  //   fetch(url)
-  //     .then(response => response.blob())
-  //     .then(blob => {
-  //       const file = new File([blob], filename);
-  //       return storageRef.put(file);
-  //     })
-  //     .then(uploadTask => {
-  //       // A imagem foi salva com sucesso no Firebase Storage
-  //       console.log('Imagem salva com sucesso:', uploadTask);
-  //     })
-  //     .catch(error => {
-  //       // Trate qualquer erro que possa ocorrer
-  //       console.error('Erro ao salvar a imagem:', error);
-  //     });
-  // }
-
-  // public get triggerObservable(): Observable<void> {
-  //   return this.trigger.asObservable();
-  // }
-
   markercity(Lat, Long) {
     const map = L.map('map').setView([Lat, Long], 17);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -225,8 +175,6 @@ export class MapsComponent {
             coordenadasAdicionadas[latLngKey] = true;
             const marker = L.marker([markerData.data.lat, markerData.data.long]).addTo(map);
             heat.addLatLng([markerData.data.lat, markerData.data.long, 2]);
-            console.log('teste aqui', markerData.data)
-
 
             marker.bindPopup(`
               <div style="background-color: #fff; padding: 10px;">
@@ -301,11 +249,8 @@ export class MapsComponent {
                 this.problemNoResolv(markerDetails2);
               });
               buttonDetails.addEventListener('click', () => {
-                console.log(markerDetails2);
                 const date = markerDetails2.data.date.toDate();
                 this.dataFormatada = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
-            
-                console.log(this.dataFormatada);
                 this.problemDetails(markerDetails2);
               }
               );
@@ -315,8 +260,6 @@ export class MapsComponent {
             const randomIncrement = 0.0001 + Math.random() * 0.0001;
             const marker = L.marker([markerData.data.lat + randomIncrementLat, markerData.data.long + randomIncrement]).addTo(map);
             heat.addLatLng([markerData.data.lat, markerData.data.long, 4]);
-
-            console.log('teste aqui', markerData.data)
 
             marker.bindPopup(`
               <div style="background-color: #fff; padding: 10px;">
@@ -476,8 +419,6 @@ export class MapsComponent {
     const date = marker_data.data.date.toDate();
     this.dataFormatada = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
 
-    console.log(this.dataFormatada);
-
     this.open_details();
     this.end_details();
   }
@@ -503,7 +444,6 @@ export class MapsComponent {
     if (this.register_problem === '' || this.register_problem === undefined || this.register_problem === null) {
       msg += 'O campo <b>Tipo de Problema</b> é obrigatório.<br>';
     }
-    console.log('user', this.auth)
     if (msg !== '') {
       this.toastr.success(msg, 'Atenção!', { enableHtml: true });
     } else {
@@ -515,11 +455,11 @@ export class MapsComponent {
         data['date'] = new Date();
         data['user'] = this.user;
         data['description'] = this.description_problem
-        if(this.greenActive){
+        if (this.greenActive) {
           data['greenArea'] = this.greenActive;
         }
         data['status'] = 'PENDENTE';
-        if(this.selectedImage){
+        if (this.selectedImage) {
           data['image'] = this.selectedImage.name;
         }
 
@@ -527,7 +467,7 @@ export class MapsComponent {
           this.register_problem = '';
           this.register_status = '';
           this.description_problem = '';
-          
+
           this.endForm();
           this.toastr.success('Cadastrado com sucesso');
           this.getGreenAreas()

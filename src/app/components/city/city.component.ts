@@ -5,8 +5,6 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AngularFireAuth } from '@angular/fire/auth';
 
-
-
 @Component({
   selector: 'app-city',
   templateUrl: './city.component.html',

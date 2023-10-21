@@ -8,7 +8,6 @@
       <option *ngFor="let o of cities" [value]="o.code">{{ o.name }} - ( {{o.UF}} )</option>
     </select>
     <select  [(ngModel)]="greenSelected" *ngIf="citySelected">
-      <!-- <option value=""> - Selecionar Area Verde </option> -->
       <option *ngFor="let i of greenSelected" [value]="i.code">{{ i.name }}</option>
     </select>
   </div>

@@ -13,11 +13,9 @@ export class ProfileService {
   ) { }
 
   buscarUsuarioPorEmail(email: string): Observable<any[]> {
-    // Use o serviço AngularFirestore para criar uma consulta
     return this.firestore.collection('users', ref => ref.where('email', '==', email))
       .snapshotChanges()
       .pipe(
-        // Mapeie os resultados para obter apenas os dados do documento
         map(actions => {
           return actions.map(a => {
             const data = a.payload.doc.data() as any;

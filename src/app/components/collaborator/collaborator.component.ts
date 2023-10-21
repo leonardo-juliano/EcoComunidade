@@ -53,13 +53,6 @@ dropdownList = [];
     };
   }
 
-  // onItemSelect(item: any) {
-  //   console.log(item);
-  // }
-  // onSelectAll(items: any) {
-  //   console.log(items);
-  // }
-
   services = [
     { 'id': '1', 'name': 'VOLUNTÁRIO' },
     { 'id': '2', 'name': 'JARDINEIRO' },

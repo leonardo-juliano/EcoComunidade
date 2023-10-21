@@ -22,21 +22,20 @@ export class ProfileComponent implements OnInit {
     private afAuth: AngularFireAuth,
   ) { }
 
-  ngOnInit() {
-    this.afAuth.authState.subscribe(user => {
+  async ngOnInit() {
+    await this.afAuth.authState.subscribe(user => {
       if (user) {
         this.user = user.email
-        console.log(this.user);
-        this.getUser();
       }
     });
+    this.getUser();
   }
 
   getUser() {
-    console.log(this.user);
+    console.log('user',this.user)
     this.profileService.buscarUsuarioPorEmail(this.user)
       .subscribe(data => {
-        console.log(data);
+        console.log('detalhes user',data);
       });
   }
 }
