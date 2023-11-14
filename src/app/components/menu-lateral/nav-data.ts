@@ -1,18 +1,13 @@
 export const navbarData = [
     {
-        routerLink: '/',
+        routerLink: '/maps/1',
         icon: 'fa-solid fa-magnifying-glass',
-        label: 'Buscar Áreas Verdes'
+        label: 'Inicio'
     },
     {
         routerLink: '/',
         icon: 'fa-regular fa-pen-to-square',
         label: 'Registrar Problema'
-    },
-    {
-        routerLink: '/',
-        icon: 'fa-sharp fa-regular fa-circle-check',
-        label: 'Solucionar'
     },
     {
         routerLink: '/implantation',
@@ -22,10 +17,10 @@ export const navbarData = [
     {
         routerLink: '/city',
         icon: 'fa-solid fa-location-dot',
-        label: 'Localização'
+        label: 'Buscar Áreas Verdes'
     },
     {
-        routerLink: '/',
+        routerLink: '/colaborators',
         icon: 'fa-solid fa-handshake',
         label: 'Colaboradores'
     },

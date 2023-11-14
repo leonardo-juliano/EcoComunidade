@@ -4,7 +4,6 @@ import { RegisterService } from '../../services/register/register.service';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
 
-
 import * as L from 'leaflet';
 import { MapService } from 'src/app/services/map/map.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -17,6 +16,9 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 
+import { FormControl } from '@angular/forms';
+
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 
 @Component({
@@ -42,7 +44,16 @@ export class MapsComponent {
   imageFormat = 'image/jpeg';
   dataFormatada = '';
 
-  //variaveis do detalhes
+    checked = false;
+    indeterminate = false;
+    labelPosition = 'after';
+    disabled = false;
+  
+
+
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
   name_problems: string;
   description_details: string;
   status_problems: string;
@@ -53,18 +64,18 @@ export class MapsComponent {
   long_problem: string;
 
   imageUrl: string;
+  imageUrlShow: string;
+
+  show_problem_urgent = false;
 
   map: any;
 
   selectedImage: File | null = null;
 
-
   selectedFile: File;
   private trigger: Subject<void> = new Subject<void>();
   public webcamImage: WebcamImage = null;
   imageUrls: string[] = [];
-
-
   imageSrc: Observable<string | null>;
 
   show: boolean = false;
@@ -81,16 +92,13 @@ export class MapsComponent {
     private route: ActivatedRoute,
     private cityService: CityService,
     private locations: Location,
-    private storage: AngularFireStorage,) {
-    // this.loadImages();
-    // const imagePath = '/images/Capturar-removebg-preview (1).png'; // O caminho da imagem no Firebase Storage
-    // const imageRef = this.storage.ref(imagePath);
-    // this.imageSrc = imageRef.getDownloadURL(); // Obtém o URL de download da imagem
+    private storage: AngularFireStorage,
+    private _formBuilder: FormBuilder) {
 
   }
+
   ngOnInit(): void {
     this.getGreenAreas();
-    //verificar usuario que esta logado
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.user = user.email
@@ -110,26 +118,41 @@ export class MapsComponent {
     const imagePath = 'gs://eco-comunidade.appspot.com/images/16953520157182170911817861569941.jpg';
     this.registerService.getImageUrl(imagePath).subscribe((url) => {
       this.imageUrl = 'gs://eco-comunidade.appspot.com/images/16953520157182170911817861569941.jpg';
+      console.log(this.imageUrl)
     });
+
   }
-
-
-
   onFileSelected(event: any): void {
-    this.selectedImage = event.target.files[0];
+    const file: File = event.target.files[0];  
+    if (file) {
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  
+      if (allowedTypes.includes(file.type)) {
+        this.selectedImage = file;
+        this.uploadImage()
+      } else {
+        console.error('Tipo de arquivo não suportado. Selecione uma imagem.');
+      }
+    }
   }
-
+  
   uploadImage(): void {
     if (this.selectedImage) {
       const filePath = `/images/${this.selectedImage.name}`;
       const fileRef = this.storage.ref(filePath);
-      this.storage.upload(filePath, this.selectedImage).then(() => {
-        console.log('Imagem enviada com sucesso!');
-      });
+  
+      this.storage.upload(filePath, this.selectedImage)
+        .then(() => {
+          console.log('Imagem enviada com sucesso!');
+        })
+        .catch(error => {
+          console.error('Erro ao enviar imagem:', error.message);
+        });
     } else {
       console.error('Nenhuma imagem selecionada.');
     }
   }
+  
 
   getGreenAreas() {
     this.cityService.getGrennAreas().subscribe(data => {
@@ -141,21 +164,13 @@ export class MapsComponent {
         this.markercity(this.lat, this.long)
       } else {
         this.greenAreasRouter = this.greenAreasRouter.filter(green => green.code == this.parametro);
-        this.greenActive = this.greenAreasRouter[0].name;
+        this.greenActive = this.greenAreasRouter[0].name ? this.greenAreasRouter[0].name : 'Não localizado';
         this.lat = this.greenAreasRouter[0].lat;
         this.long = this.greenAreasRouter[0].long;
         this.markercity(this.lat, this.long)
       }
 
     });
-  }
-
-  photoPrint() {
-    this.photo = true;
-  }
-
-  triggerSnapshot(): void {
-    this.trigger.next();
   }
 
   markercity(Lat, Long) {
@@ -344,7 +359,8 @@ export class MapsComponent {
     });
   }
 
-  problemDetails(markerData) {
+  async problemDetails(markerData) {
+    this.imageUrlShow = '';
     this.show_details = true;
     this.name_problems = markerData.data.Register_problem;
     this.description_details = markerData.data.description;
@@ -353,43 +369,30 @@ export class MapsComponent {
     this.user_problems = markerData.data.user;
     this.lat_problem = markerData.data.lat;
     this.long_problem = markerData.data.long;
-    // if(markerData.data.image){
-    //   const imagePath = 'gs://eco-comunidade.appspot.com/images/' + markerData.data.image;
-    //   console.log(imagePath)
-    //   this.registerService.getImageUrl(imagePath).subscribe((url) => {
-    //     this.imageUrl = 'gs://eco-comunidade.appspot.com/images/' + markerData.data.image;
-    //   })
-    // }
+    this.imageUrl = markerData.data.image;
+
+    try {
+      this.imageUrlShow = await this.mapsservice.getImageUrl('gs://eco-comunidade.appspot.com/images/' + this.imageUrl);
+    } catch (error) {
+      console.log(error);
+    }
+
   }
 
-  // loadImages() {
-  //   // Chame o serviço para obter as URLs das imagens no Firebase Storage
-  //   this.registerService.getDownloadURL('/image/').subscribe((url) => {
-  //     if (url) {
-  //       this.imageUrls.push(url);
-  //     }
-  //   });
-  // }
   problemNoResolv(markerData) {
-
     this.toastr.warning('Obrigado pelo Feedback.', 'Vamos colocar em nossa lista de prioridades !');
-
   }
 
   problemResolv(markerData) {
     this.registerService.update(markerData.id).then(resp => {
       this.toastr.success('Atualizado com sucesso', 'Obrigado por resolver o problema !');
-      this.reloadPage();
+      this.getGreenAreas();
     }
     )
       .catch(error => {
         this.toastr.error('This is error toast.', 'Oops!');
         console.log(error);
       });
-  }
-
-  reloadPage() {
-    this.locations.go(this.locations.path());
   }
 
   problem = [
@@ -439,50 +442,51 @@ export class MapsComponent {
     this.show = false;
   };
 
+  problemUrgent(flag) {
+    this.show_problem_urgent = flag === 1;
+    console.log(this.show_problem_urgent)
+  }
+
   CreateRegister() {
     let msg = '';
-    if (this.register_problem === '' || this.register_problem === undefined || this.register_problem === null) {
+    if (!this.register_problem) {
       msg += 'O campo <b>Tipo de Problema</b> é obrigatório.<br>';
     }
-    if (msg !== '') {
-      this.toastr.success(msg, 'Atenção!', { enableHtml: true });
+  
+    if (msg) {
+      this.toastr.warning(msg, 'Atenção!', { enableHtml: true });
     } else {
-      try {
-        let data = {};
-        data['lat'] = this.lat;
-        data['long'] = this.long;
-        data['Register_problem'] = this.register_problem;
-        data['date'] = new Date();
-        data['user'] = this.user;
-        data['description'] = this.description_problem
-        if (this.greenActive) {
-          data['greenArea'] = this.greenActive;
-        }
-        data['status'] = 'PENDENTE';
-        if (this.selectedImage) {
-          data['image'] = this.selectedImage.name;
-        }
-
-        this.registerService.create_register(data).then(resp => {
+      const data = {
+        lat: this.lat,
+        long: this.long,
+        Register_problem: this.register_problem,
+        date: new Date(),
+        user: this.user,
+        active: 1,
+        description: this.description_problem || '',
+        greenArea: this.greenActive || null,
+        urgent : this.show_problem_urgent,
+        status: 'PENDENTE',
+        image: this.selectedImage ? this.selectedImage.name : null
+      };
+  
+      this.registerService.create_register(data)
+        .then(resp => {
           this.register_problem = '';
           this.register_status = '';
           this.description_problem = '';
-
+  
           this.endForm();
           this.toastr.success('Cadastrado com sucesso');
-          this.getGreenAreas()
+          this.getGreenAreas();
         })
-          .catch(error => {
-            this.toastr.error('This is error toast.', 'Oops!');
-            console.log(error);
-          });
-      }
-      catch (error) {
-        this.toastr.error('This is error toast.', 'Oops!');
-        console.log(error);
-      }
+        .catch(error => {
+          this.toastr.error('Ocorreu um erro ao cadastrar.', 'Oops!');
+          console.error(error);
+        });
     }
   }
+  
 }
 
 

@@ -1,9 +1,11 @@
 <div class="container">
-  <div class="profile-card">
-    <img class="profile-image" src="user-avatar.jpg" alt="Imagem do Usuário">
-    <div class="profile-name">Nome do Usuário</div>
-    <div class="profile-email">usuario@email.com</div>
-    <p class="profile-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida facilisis libero, non pellentesque quam hendrerit a.</p>
+  <div class="profile-card" *ngFor="let p of profile">
+    <img class="profile-image" src="../../../assets/img/profile-man.png" alt="Imagem do Usuário">
+    <div class="profile-name">{{p.name}}</div>
+    <div class="profile-email">{{p.email}}</div>
+    <div class="profile-email">{{p.adress}}</div>
+    <div class="profile-email">{{p.city}}</div>
+    <div class="profile-email">{{p.phone}}</div>
   </div>
 
 </div>

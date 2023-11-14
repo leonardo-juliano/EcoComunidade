@@ -13,6 +13,7 @@ import { ProfileService } from 'src/app/services/profile/profile.service';
 export class ProfileComponent implements OnInit {
 
   user = '';
+  profile = [];
 
   constructor(
     private toastr: ToastrService,
@@ -26,15 +27,16 @@ export class ProfileComponent implements OnInit {
     await this.afAuth.authState.subscribe(user => {
       if (user) {
         this.user = user.email
+        this.getUser();
       }
     });
-    this.getUser();
+    
   }
 
   getUser() {
-    console.log('user',this.user)
     this.profileService.buscarUsuarioPorEmail(this.user)
       .subscribe(data => {
+        this.profile = data
         console.log('detalhes user',data);
       });
   }

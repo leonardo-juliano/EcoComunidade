@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+
 
 
 @Component({
@@ -32,6 +34,9 @@ export class UserComponent implements OnInit {
   redirect(){
     this.router.navigate(['/login']);
   }
+
+  toppings = new FormControl();
+  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
 
   register() {
     let msg = '';

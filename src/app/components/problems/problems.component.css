@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f4f4f4; /* Cor de fundo, ajuste conforme necessário */
+  padding: 70px;
+}
+
+.filter-input {
+  width: 300px; /* Ajuste conforme necessário */
+  margin-bottom: 20px; /* Adiciona espaço entre o filtro e a tabela */
+  background-color: #FFFFFF;
+  padding: 10px;
+  border-radius: 50px;
+}
+
+.table-container {
+  max-height: 400px; /* Defina a altura máxima desejada */
+  overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
+}
+
+.table {
+  border-radius: 10px; /* Adiciona arredondamento nas bordas da tabela */
+  overflow: hidden; /* Garante que o arredondamento é aplicado corretamente */
+  background-color: #fff; /* Cor de fundo da tabela, ajuste conforme necessário */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}

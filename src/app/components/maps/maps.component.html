@@ -3,55 +3,44 @@
 </div>
 <div id="map"></div>
 
+<!-- Registrar problema -->
 <div class="popup" id="popup" *ngIf="show">
   <div class="close-btn" (click)="endForm()">&times;</div>
   <div class="form">
     <h2>Registro</h2>
     <div class="form-element">
       <div class="row">
-        <label for="">Qual o problema ? </label>
-        <select name="" id="register_problem" [(ngModel)]="register_problem">
-          <option *ngFor="let s of problem" value="{{s.name}}">{{s.name}}
-          </option>
+        <label for="register_problem">Qual o problema?</label>
+        <select id="register_problem" name="register_problem" [(ngModel)]="register_problem">
+          <option *ngFor="let s of problem" [value]="s.name">{{ s.name }}</option>
         </select>
-        <label for="">Descrição detalhada:</label>
-        <input type="text" [(ngModel)]="description_problem" />
-        <label for="">Localização:</label>
-        <input type="text" [(ngModel)]="greenActive" disabled>
-        <form (ngSubmit)="uploadImage()" #imageForm="ngForm">
-          <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-          <button class="botao_registro" (click)="CreateRegister()">REGISTRAR</button>
-        </form>
-        
-
-        <!-- <label>Status</label>
-        <select name="" id="" [(ngModel)]="register_status">
-          <option *ngFor="let s of status" value="{{s.name}}">{{s.name}}
-          </option>
-        </select> -->
-        <!-- <input type="file" (change)="handleFileInput($event)"> -->
-      </div>
-      <!-- <div *ngIf="photo">
-        <webcam [height]="250" 
-                [width]="250" 
-                [trigger]="triggerObservable"
-                (imageCapture)="handleImage($event)">
-         </webcam>
-          
-        <button class="actionBtn" (click)="triggerSnapshot();">
-            Foto salva</button>
-          
-        <div class="snapshot" *ngIf="webcamImage">
-          <h2>olha ai cabaço</h2>
-          <img [src]="webcamImage.imageAsDataUrl"/>
+        <label for="description_problem">Descrição detalhada:</label>
+        <input type="text" id="description_problem" name="description_problem" [(ngModel)]="description_problem" />
+        <label class="mr-left control-label req">Este problema é grave?
+            <span
+              tooltip="Define se será listado ou não para os vendedores os tipos de pedido inativos na tela do pedidos."
+              placement="right"><i class="fa fa-question-circle question_tooltip"></i></span></label>
+          <div class="switch mr-top">
+            <label class="radio-inline pr-4"><input type="radio" 
+                                                     value="true"
+                                                    (change)="problemUrgent(1)"> Sim     </label>
+            <label class="radio-inline"><input type="radio" checked
+                                                value="false"
+                                               (change)="problemUrgent(2)"> Não </label>
         </div>
-      </div> -->
+        <label for="location">Localização:</label>
+        <input type="text" id="location" name="location" [(ngModel)]="location" />
 
-      <!-- <button class="botao_registro" (click)="photoPrint()">TIRAR FOTO</button> -->
+        <form (ngSubmit)="uploadImage()" #imageForm="ngForm">
+          <input type="file" id="fileInput" name="fileInput" (change)="onFileSelected($event)" accept="image/*" />
+        </form>
 
+        <button class="botao_registro" (click)="CreateRegister()">REGISTRAR</button>
+      </div>
     </div>
   </div>
 </div>
+
 
 <!-- Popup de detalhes -->
 <div class="popup_details" id="popup_details" *ngIf="show_details">
@@ -60,6 +49,9 @@
     <h2>Detalhes</h2>
     <div class="form-element">
       <div class="row">
+        <div class="container_image">
+          <img [src]="imageUrlShow" alt="" class="imgGreen">
+        </div>
         <!-- <img [src]="imageSrc | async" alt="Minha Imagem" /> -->
         <label for="">Problema: </label>
         <input type="text"  disabled [(ngModel)]="name_problems"/>
@@ -74,7 +66,6 @@
           <option *ngFor="let s of status" value="{{s.name}}">{{s.name}}
           </option>
         </select>
-        <img [src]="imageUrl" alt="Imagem Firebase">
         <button class="botao_registro" (click)="updateStatus()">ATUALIZAR</button>
       </div>
     </div>

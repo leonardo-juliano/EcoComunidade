@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { navbarData } from './nav-data';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'; // Importe NavigationEnd
+import { ProfileService } from 'src/app/services/profile/profile.service';
+import { AngularFireAuth } from '@angular/fire/auth';
+
 
 @Component({
   selector: 'app-menu-lateral',
@@ -14,11 +17,17 @@ export class MenuLateralComponent implements OnInit {
   collapsed = false;
   navData = navbarData;
   showMenu = true;
+  user = '';
+  profile = [];
+  colaborador = false;
 
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private afAuth: AngularFireAuth,
+    private profileService: ProfileService,
+
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -28,7 +37,13 @@ export class MenuLateralComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.user = user.email
+        this.getUser();
+      }
+    });
   }
 
   toggleCollapse(): void {
@@ -41,6 +56,22 @@ export class MenuLateralComponent implements OnInit {
     }else{
       this.showMenu = true;
     }
+  }
+
+  getUser() {
+    this.profileService.buscarUsuarioPorEmail(this.user)
+      .subscribe(data => {
+        this.profile = data
+        if(this.profile[0].collaborator == true){
+          this.colaborador = true;
+        }else{
+          this.colaborador = false;
+        }
+      });
+  }
+
+  redirectProblems(){
+    this.router.navigate(['/problems']);
   }
 
   closeSidenav(): void {
