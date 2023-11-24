@@ -1,30 +1,23 @@
 <body>
-<div class="container">
+<!-- <div class="container">
   <mat-form-field class="filter-input">
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
   </mat-form-field>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table">
 
-    <!-- Position Column -->
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef> Tipo </th>
       <td mat-cell *matCellDef="let problems"> {{problems.Register_problem}} </td>
     </ng-container>
-
-    <!-- Name Column -->
     <ng-container matColumnDef="local">
       <th mat-header-cell *matHeaderCellDef> Local </th>
       <td mat-cell *matCellDef="let problems"> {{problems.greenArea}} </td>
     </ng-container>
-
-    <!-- Weight Column -->
     <ng-container matColumnDef="urgente">
       <th mat-header-cell *matHeaderCellDef> Urgente ? </th>
-      <td mat-cell *matCellDef="let problems"> {{problems.active}} </td>
+      <td mat-cell *matCellDef="let problems"> {{problems.urgent}} </td>
     </ng-container>
-
-    <!-- Symbol Column -->
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef> status </th>
       <td mat-cell *matCellDef="let problems"> {{problems.status}} </td>
@@ -32,7 +25,11 @@
 
     <ng-container matColumnDef="image">
       <th mat-header-cell *matHeaderCellDef> imagem </th>
-      <td mat-cell *matCellDef="let problems" (click)="viewDetailsImage(problems.id)"> <i class="fa-solid fa-eye"></i> </td>
+      <td mat-cell *matCellDef="let problems" (click)="viewDetails(problems.id)"> 
+        <button data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          <i class="fa-solid fa-eye"></i> 
+        </button>
+      </td>
     </ng-container> 
 
     <ng-container matColumnDef="date">
@@ -42,43 +39,172 @@
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Detalhes </th>
-      <td mat-cell *matCellDef="let problems" (click)="viewDetails(problems.id)"> <i class="fa-solid fa-circle-info"></i></td>
+      <td mat-cell *matCellDef="let problems" (click)="viewDetails(problems.id)" data-bs-target="#exampleModal"> 
+        <button data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"><i class="fa-solid fa-circle-info" ></i>
+      </button>
+</td>
     </ng-container> 
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-</div>
+</div> -->
 
+<!-- Modal detalhes -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Detalhes</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img [src]="imageUrlShow" alt=""  class="rounded mx-auto d-block" style="width: 200px; height: 200px;">
+        <div class="mb-2">
+            <label for="">Problema: </label>
+            <input type="text" class="form-control" id="problem" name="problem" disabled/>
 
-<!-- Popup de detalhes
-<div class="popup_details" id="popup_details">
-  <div class="close-btn" (click)="end_details()">&times;</div>
-  <div class="form">
-    <h2>Detalhes</h2>
-    <div class="form-element">
-      <div class="row">
-        <div class="container_image">
-          <img [src]="imageUrlShow" alt="" class="imgGreen">
-        </div>
-        < <img [src]="imageSrc | async" alt="Minha Imagem" />
-        <label for="">Problema: </label>
-        <input type="text"  disabled [(ngModel)]="name_problems"/>
-        <label for="">Descrição detalhada:</label>
-        <input type="text" [(ngModel)]="description_details" disabled />
-        <label for="">Localização:</label>
-        <input type="text" [(ngModel)]="name_problems" disabled />
-        <label for="">Data:</label>
-        <input type="text" [(ngModel)]="dataFormatada" disabled />
-        <label>Status</label>
-        <select name="" id="" [(ngModel)]="name_status">
-          <option *ngFor="let s of status" value="{{s.name}}">{{s.name}}
-          </option>
-        </select>
-        <button class="botao_registro" (click)="updateStatus()">ATUALIZAR</button>
+          </div>
+          <div class="mb-2">
+            <label for="">Descrição detalhada:</label>
+            <input type="text" class="form-control" id="description"  disabled />
+          </div>
+          <div class="mb-2">
+            <label for="">Localização:</label>
+            <input type="text" class="form-control" id="local" disabled />
+          </div>
+          <div class="mb-2">
+            <label for="">Urgente ?</label>
+            <input type="text"  class="form-control" id="urgent" disabled/>
+          </div>
+          <div class="mb-2">
+            <label>Status</label>
+            <input type="text" class="form-control" id="status"  disabled/>
+          </div>
+          <div class="mb-2">
+            <label>Criado por:</label>
+            <input type="text" class="form-control" id="nameUser"  disabled/>
+          </div>
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="redirectMaps()">Ver no mapa</button>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+          Resolvido        
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal3">Alterar Status</button>
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
+
+<!-- Modal images-->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Imagem</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img [src]="imageUrlShow" alt=""  class="rounded mx-auto d-block" style="width: 200px; height: 200px;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Voltar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Resolver problema -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Obrigado pela Iniciativa !</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label >Descrição detalhada sobre a resolução:</label>
+          <input type="text" id="descriptionResolved" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <form (ngSubmit)="uploadImage()" #imageForm="ngForm">
+            <label for="fileInput" class="custom-file-upload">
+              <span> <i class="fa-solid fa-camera"></i>   Tirar foto </span>
+            </label>
+            <input type="file" id="fileInput" name="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;" />
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Voltar</button>
+        <button type="button" class="btn btn-success" (click)="resolvedProblem()">Resolver</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pop up para alterar status -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Alterar status</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label >Descrição detalhada sobre a a atual situação</label>
+          <input type="text" id="descriptionStatus" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label for="register_problem">Qual o problema?</label>
+          <select id="status_problem" name="status_problem" class="form-select">
+            <option *ngFor="let s of statusProblem" [value]="s.name">{{ s.name }}</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <form (ngSubmit)="uploadImage()" #imageForm="ngForm">
+            <label for="fileInput" class="custom-file-upload">
+              <span> <i class="fa-solid fa-camera"></i>   Tirar foto </span>
+            </label>
+            <input type="file" id="fileInput" name="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;" />
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Voltar</button>
+        <button type="button" class="btn btn-success" (click)="changeStatus()">Alterar</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
+
+
+
+<div class="container mt-5" *ngFor="let i of problemsDetails">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card text-center" >
+        <div class="card-header">
+          {{i.status}}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{i.Register_problem}}</h5>
+          <p class="card-text">Descrição: <strong>{{i.description}}</strong></p>
+          
+          
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="problemDetails(i.id)">imagem</button>
+          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="problemDetails(i.id)">Detalhes</button>
+        </div>
+        <div class="card-footer text-muted">
+          <p class="card-text">Data de criação: <strong>{{i.date}}</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

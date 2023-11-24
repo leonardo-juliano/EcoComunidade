@@ -3,15 +3,15 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.container {
+/* .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f4f4f4; /* Cor de fundo, ajuste conforme necessário */
+  background-color: #f4f4f4; 
   padding: 70px;
-}
+} */
 
 .filter-input {
   width: 300px; /* Ajuste conforme necessário */
@@ -42,4 +42,69 @@ body {
 
 .table th {
   background-color: #f2f2f2;
+}
+
+.popup_details{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.25);
+  width: 600px;
+  padding: 20px 30px;
+  background-color: #ffffff;
+  box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200ms, transform 0ms ease-in-out 200ms;
+  z-index: 0; /* Defina o z-index padrão aqui */
+  max-height: 60vh; /* Defina a altura máxima desejada (porcentagem da altura da janela) */
+  overflow-y: auto; /* Adicione uma barra de rolagem vertical quando necessário */
+}
+
+.popup_details .close-btn{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 15px;
+  cursor: pointer;
+  padding-top: 10px;
+}
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+  align-items: center;
+  background-color: #00C88E;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.custom-file-upload span {
+  display: flex;
+  color: #FFF;
+  align-items: center; 
+  justify-content: center;
+}
+
+
+.botao_registro {
+  width: 100%;
+  height: 40px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: #00C88E;
+  color: #ffffff;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+
+@media screen and (max-width: 768px) {
+  body {
+    margin-top: 150px;
+    margin-bottom: 150px;
+    font-family: Arial, sans-serif;
+  }
 }

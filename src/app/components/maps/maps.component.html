@@ -1,48 +1,8 @@
 <div class="botao" *ngIf="!show && !show_details">
-  <button type="button" class="botao_registrar" id="openPopup" (click)="open()">REGISTRAR</button>
-</div>
+  <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">REGISTRAR</button></div>
 <div id="map"></div>
 
-<!-- Registrar problema -->
-<div class="popup" id="popup" *ngIf="show">
-  <div class="close-btn" (click)="endForm()">&times;</div>
-  <div class="form">
-    <h2>Registro</h2>
-    <div class="form-element">
-      <div class="row">
-        <label for="register_problem">Qual o problema?</label>
-        <select id="register_problem" name="register_problem" [(ngModel)]="register_problem">
-          <option *ngFor="let s of problem" [value]="s.name">{{ s.name }}</option>
-        </select>
-        <label for="description_problem">Descrição detalhada:</label>
-        <input type="text" id="description_problem" name="description_problem" [(ngModel)]="description_problem" />
-        <label class="mr-left control-label req">Este problema é grave?
-            <span
-              tooltip="Define se será listado ou não para os vendedores os tipos de pedido inativos na tela do pedidos."
-              placement="right"><i class="fa fa-question-circle question_tooltip"></i></span></label>
-          <div class="switch mr-top">
-            <label class="radio-inline pr-4"><input type="radio" 
-                                                     value="true"
-                                                    (change)="problemUrgent(1)"> Sim     </label>
-            <label class="radio-inline"><input type="radio" checked
-                                                value="false"
-                                               (change)="problemUrgent(2)"> Não </label>
-        </div>
-        <label for="location">Localização:</label>
-        <input type="text" id="location" name="location" [(ngModel)]="location" />
-
-        <form (ngSubmit)="uploadImage()" #imageForm="ngForm">
-          <input type="file" id="fileInput" name="fileInput" (change)="onFileSelected($event)" accept="image/*" />
-        </form>
-
-        <button class="botao_registro" (click)="CreateRegister()">REGISTRAR</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Popup de detalhes -->
+ Popup de detalhes
 <div class="popup_details" id="popup_details" *ngIf="show_details">
   <div class="close-btn" (click)="end_details()">&times;</div>
   <div class="form">
@@ -52,7 +12,6 @@
         <div class="container_image">
           <img [src]="imageUrlShow" alt="" class="imgGreen">
         </div>
-        <!-- <img [src]="imageSrc | async" alt="Minha Imagem" /> -->
         <label for="">Problema: </label>
         <input type="text"  disabled [(ngModel)]="name_problems"/>
         <label for="">Descrição detalhada:</label>
@@ -71,3 +30,140 @@
     </div>
   </div>
 </div>
+
+<!-- popup de registro -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Registrar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="register_problem">Qual o problema?</label>
+            <select id="register_problem" name="register_problem" class="form-select">
+              <option *ngFor="let s of problem" [value]="s.name">{{ s.name }}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label >Descrição detalhada:</label>
+            <input type="text" id="description_problem" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label class="mr-left control-label req">Este problema é grave?</label>
+            <div class="switch mr-top">
+              <label class="radio-inline pr-4"><input class="form-check-input" type="radio" 
+                                                       value="true" 
+                                                      (change)="problemUrgent(1)"> Sim</label>
+              <label class="radio-inline"><input class="form-check-input" type="radio"
+                                                  value="false"
+                                                 (change)="problemUrgent(2)"> Não </label>
+          </div>
+          </div>
+          <div class="mb-3">
+            <label for="location">Localização:</label>
+            <input type="text" id="greenArea" name="location" class="form-control" disabled/>
+          </div>
+          <div class="mb-3">
+            <form (ngSubmit)="uploadImage()" #imageForm="ngForm">
+              <label for="fileInput" class="custom-file-upload">
+                <span> <i class="fa-solid fa-camera"></i>   Tirar foto </span>
+              </label>
+              <input type="file" id="fileInput" name="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;" />
+            </form>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+        <button type="button" class="btn btn-success" (click)="CreateRegister()" >Salvar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- popup de detalhes -->
+
+<div class="modal mdo" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Detalhes</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img [src]="imageUrlShow" alt=""  class="rounded mx-auto d-block" style="width: 200px; height: 200px;">
+        <div class="mb-2">
+            <label for="">Problema: </label>
+            <input type="text" class="form-control" id="problem_details" name="problem" disabled/>
+
+          </div>
+          <div class="mb-2">
+            <label for="">Descrição detalhada:</label>
+            <input type="text" class="form-control" id="description_details"  disabled />
+          </div>
+          <div class="mb-2">
+            <label for="">Localização:</label>
+            <input type="text" class="form-control" id="local_details" disabled />
+          </div>
+          <div class="mb-2">
+            <label for="">Urgente ?</label>
+            <input type="text"  class="form-control" id="urgent_details" disabled/>
+          </div>
+          <div class="mb-2">
+            <label>Status</label>
+            <input type="text" class="form-control" id="status_details"  disabled/>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Voltar</button>
+        <button type="button" class="btn btn-success" (click)="resolvedProblem()">Resolvido</button>
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal3">Alterar Status</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Alterar status</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label >Descrição detalhada sobre a a atual situação:</label>
+          <input type="text" id="descriptionStatus" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label for="register_problem">Status do Problema:</label>
+          <select id="status_problem" name="status_problem" class="form-select">
+            <option *ngFor="let s of statusProblem" [value]="s.name">{{ s.name }}</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <form (ngSubmit)="uploadImage()" #imageForm="ngForm">
+            <label for="fileInput" class="custom-file-upload">
+              <span> <i class="fa-solid fa-camera"></i>   Tirar foto </span>
+            </label>
+            <input type="file" id="fileInput" name="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;" />
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Voltar</button>
+        <button type="button" class="btn btn-success" (click)="changeStatus()">Alterar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

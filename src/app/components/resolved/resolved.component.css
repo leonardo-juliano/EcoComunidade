@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    margin-top: 150px;
+    font-family: Arial, sans-serif;
+  }
+
+
+  @media screen and (max-width: 768px) {
+    body {
+      margin-top: 150px;
+      margin-bottom: 150px;
+      font-family: Arial, sans-serif;
+    }
+  }
+  

@@ -15,10 +15,12 @@ import 'leaflet.heat';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
+import { ProfileService } from 'src/app/services/profile/profile.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProblemsService } from 'src/app/services/problems/problems.service';
 
-import { FormControl } from '@angular/forms';
+declare const $: any;
 
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 
 @Component({
@@ -27,8 +29,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./maps.component.css']
 })
 export class MapsComponent {
-  location = "";
-  reference = "";
+  // location = "";
   register_problem: string;
   register_status: string;
   parametro = '';
@@ -37,21 +38,12 @@ export class MapsComponent {
   long = 0;
   active = 1;
   greenActive = '';
-  currentMarkerData: any;
   user = '';
   photo = false;
-  imageName = 'imageTeste';
-  imageFormat = 'image/jpeg';
   dataFormatada = '';
 
-    checked = false;
-    indeterminate = false;
-    labelPosition = 'after';
-    disabled = false;
-  
+  disabled = false;
 
-
-  isLinear = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   name_problems: string;
@@ -62,9 +54,10 @@ export class MapsComponent {
   description_problem: string;
   lat_problem: string;
   long_problem: string;
-
+  idProblem = '';
   imageUrl: string;
   imageUrlShow: string;
+  levelUser: boolean;
 
   show_problem_urgent = false;
 
@@ -73,13 +66,37 @@ export class MapsComponent {
   selectedImage: File | null = null;
 
   selectedFile: File;
-  private trigger: Subject<void> = new Subject<void>();
+  // private trigger: Subject<void> = new Subject<void>();
   public webcamImage: WebcamImage = null;
   imageUrls: string[] = [];
-  imageSrc: Observable<string | null>;
+  // imageSrc: Observable<string | null>;
 
   show: boolean = false;
   show_details: boolean = false;
+
+  statusProblem = [
+    { 'id': '1', 'name': 'EM ANDAMENTO' },
+    { 'id': '2', 'name': 'PARADO' },
+    { 'id': '3', 'name': 'NÃO RESOLVIDO' }
+  ]
+
+  problem = [
+    { 'id': '1', 'name': 'POLUIÇÃO' },
+    { 'id': '2', 'name': 'DEGRADAÇÃO' },
+    { 'id': '3', 'name': 'LIXO E DESCARTE INADEQUADO DE LIXO' },
+    { 'id': '4', 'name': 'FOGO' },
+    { 'id': '5', 'name': 'ACESSIBILIDADE' },
+    { 'id': '6', 'name': 'MANUTENÇÃO' },
+    { 'id': '7', 'name': 'OUTRO(S)' }
+  ]
+
+  status = [
+    { 'id': '1', 'name': 'RESOLVIDO' },
+    { 'id': '2', 'name': 'NÃO RESOLVIDO' },
+    { 'id': '3', 'name': 'EM ANDAMENTO' },
+    { 'id': '4', 'name': 'OUTRO(S)' }
+  ]
+
 
   constructor(
     private registerService: RegisterService,
@@ -88,12 +105,13 @@ export class MapsComponent {
     private toastr: ToastrService,
     private mapsservice: MapService,
     private router: Router,
-
     private route: ActivatedRoute,
     private cityService: CityService,
     private locations: Location,
     private storage: AngularFireStorage,
-    private _formBuilder: FormBuilder) {
+    private _formBuilder: FormBuilder,
+    private profileService: ProfileService,
+    private problemsService: ProblemsService) {
 
   }
 
@@ -101,7 +119,11 @@ export class MapsComponent {
     this.getGreenAreas();
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        this.user = user.email
+        this.user = user.email;
+        this.profileService.getUserByEmail(user.email).subscribe(data => {
+          this.levelUser = data.collaborator;
+          console.log("nivel", this.levelUser);
+        });
       }
     });
     this.afAuth.authState.subscribe(user => {
@@ -118,29 +140,28 @@ export class MapsComponent {
     const imagePath = 'gs://eco-comunidade.appspot.com/images/16953520157182170911817861569941.jpg';
     this.registerService.getImageUrl(imagePath).subscribe((url) => {
       this.imageUrl = 'gs://eco-comunidade.appspot.com/images/16953520157182170911817861569941.jpg';
-      console.log(this.imageUrl)
     });
 
   }
   onFileSelected(event: any): void {
-    const file: File = event.target.files[0];  
+    const file: File = event.target.files[0];
     if (file) {
       const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-  
+
       if (allowedTypes.includes(file.type)) {
         this.selectedImage = file;
-        this.uploadImage()
+        this.uploadImage();
       } else {
         console.error('Tipo de arquivo não suportado. Selecione uma imagem.');
       }
     }
   }
-  
+
   uploadImage(): void {
     if (this.selectedImage) {
       const filePath = `/images/${this.selectedImage.name}`;
       const fileRef = this.storage.ref(filePath);
-  
+
       this.storage.upload(filePath, this.selectedImage)
         .then(() => {
           console.log('Imagem enviada com sucesso!');
@@ -152,7 +173,7 @@ export class MapsComponent {
       console.error('Nenhuma imagem selecionada.');
     }
   }
-  
+
 
   getGreenAreas() {
     this.cityService.getGrennAreas().subscribe(data => {
@@ -165,6 +186,7 @@ export class MapsComponent {
       } else {
         this.greenAreasRouter = this.greenAreasRouter.filter(green => green.code == this.parametro);
         this.greenActive = this.greenAreasRouter[0].name ? this.greenAreasRouter[0].name : 'Não localizado';
+        $('#greenArea').val(this.greenActive);
         this.lat = this.greenAreasRouter[0].lat;
         this.long = this.greenAreasRouter[0].long;
         this.markercity(this.lat, this.long)
@@ -199,7 +221,7 @@ export class MapsComponent {
                 <button class="buttonNoResolv">Não Resolvido</button>
               </div>
               <div class="details">
-                <button class="buttonDetails">Detalhes</button>
+                <button type="button" id= "buttonDetails" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="@mdo">Detalhes</button>
               </div>
               <style>
                     p{
@@ -218,7 +240,7 @@ export class MapsComponent {
                         text-decoration: none;
                         transition: background-color 0.3s ease;
                     }
-                    .buttonDetails {
+                    #buttonDetails {
                       color: #fff; 
                       border: none;
                       border-radius: 5px;
@@ -255,17 +277,18 @@ export class MapsComponent {
               const popup = marker.getPopup();
               const buttonResolv = popup.getElement().querySelector('.buttonResolv');
               const buttonNoResolv = popup.getElement().querySelector('.buttonNoResolv');
-              const buttonDetails = popup.getElement().querySelector('.buttonDetails');
+              const buttonDetails = popup.getElement().querySelector('#buttonDetails');
 
               buttonResolv.addEventListener('click', () => {
                 this.problemResolv(markerDetails2);
+                console.log(markerDetails2)
+
               });
               buttonNoResolv.addEventListener('click', () => {
                 this.problemNoResolv(markerDetails2);
+                console.log(markerDetails2)
               });
               buttonDetails.addEventListener('click', () => {
-                const date = markerDetails2.data.date.toDate();
-                this.dataFormatada = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
                 this.problemDetails(markerDetails2);
               }
               );
@@ -280,11 +303,11 @@ export class MapsComponent {
               <div style="background-color: #fff; padding: 10px;">
                 <p><strong>Problema: </strong>${markerData.data.Register_problem}</p>
                 <p><strong>Status: </strong>${markerData.data.status}</p>
-                <button class="buttonResolv" id="buttonResolv" (click)="testando()">Resolvido</button>
-                <button class="buttonNoResolv" (click)="testando()">Não Resolvido</button>
+                <button class="buttonResolv" id="buttonResolv" >Resolvido</button>
+                <button class="buttonNoResolv">Não Resolvido</button>
               </div>
               <div class="details">
-                <button class="buttonDetails" (click)="testando()">Detalhes</button>
+                <button id="buttonDetails" type="button" id= "buttonDetails" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="@mdo">Detalhes</button>
               </div>
               <style>
                     p{
@@ -303,7 +326,7 @@ export class MapsComponent {
                         text-decoration: none;
                         transition: background-color 0.3s ease;
                     }
-                    .buttonDetails {
+                    #buttonDetails {
                       color: #fff; 
                       border: none;
                       border-radius: 5px;
@@ -340,7 +363,7 @@ export class MapsComponent {
               // Adicione ouvintes de eventos aos botões dentro do popup
               const buttonResolv = popup.getElement().querySelector('.buttonResolv');
               const buttonNoResolv = popup.getElement().querySelector('.buttonNoResolv');
-              const buttonDetails = popup.getElement().querySelector('.buttonDetails');
+              const buttonDetails = popup.getElement().querySelector('#buttonDetails');
 
               buttonResolv.addEventListener('click', () => {
                 this.problemResolv(markerDetails2);
@@ -360,8 +383,16 @@ export class MapsComponent {
   }
 
   async problemDetails(markerData) {
+
+    console.log('entrei aqui no details', markerData)
     this.imageUrlShow = '';
-    this.show_details = true;
+    // this.show_details = true;
+    $('#description_details').val(markerData.data.description);
+    $('#status_details').val(markerData.data.status);
+    $('#date_details').val(markerData.data.date);
+    $('#problem_details').val(markerData.data.Register_problem);
+    $('#urgent_details').val(markerData.data.urgent ? 'SIM' : 'NÃO');
+
     this.name_problems = markerData.data.Register_problem;
     this.description_details = markerData.data.description;
     this.status_problems = markerData.data.status;
@@ -370,6 +401,7 @@ export class MapsComponent {
     this.lat_problem = markerData.data.lat;
     this.long_problem = markerData.data.long;
     this.imageUrl = markerData.data.image;
+    this.idProblem = markerData.id;
 
     try {
       this.imageUrlShow = await this.mapsservice.getImageUrl('gs://eco-comunidade.appspot.com/images/' + this.imageUrl);
@@ -395,27 +427,9 @@ export class MapsComponent {
       });
   }
 
-  problem = [
-    { 'id': '1', 'name': 'POLUIÇÃO' },
-    { 'id': '2', 'name': 'DEGRADAÇÃO' },
-    { 'id': '3', 'name': 'LIXO E DESCARTE INADEQUADO DE LIXO' },
-    { 'id': '4', 'name': 'FOGO' },
-    { 'id': '5', 'name': 'ACESSIBILIDADE' },
-    { 'id': '6', 'name': 'MANUTENÇÃO' },
-    { 'id': '7', 'name': 'OUTRO(S)' }
-  ]
-
-  status = [
-    { 'id': '1', 'name': 'RESOLVIDO' },
-    { 'id': '2', 'name': 'NÃO RESOLVIDO' },
-    { 'id': '3', 'name': 'EM ANDAMENTO' },
-    { 'id': '4', 'name': 'OUTRO(S)' }
-  ]
-
   getRandomNumber(min, max) {
     return Math.random() * (max - min) + min;
   }
-
 
   details(marker_data) {
     console.log(marker_data)
@@ -449,10 +463,13 @@ export class MapsComponent {
 
   CreateRegister() {
     let msg = '';
+    this.description_details = $('#description_problem').val();
+    this.register_problem = $('#register_problem').val();
+
     if (!this.register_problem) {
       msg += 'O campo <b>Tipo de Problema</b> é obrigatório.<br>';
     }
-  
+
     if (msg) {
       this.toastr.warning(msg, 'Atenção!', { enableHtml: true });
     } else {
@@ -460,24 +477,26 @@ export class MapsComponent {
         lat: this.lat,
         long: this.long,
         Register_problem: this.register_problem,
-        date: new Date(),
+        date: new Date().toLocaleDateString(),
         user: this.user,
         active: 1,
-        description: this.description_problem || '',
+        description: this.description_details || '',
         greenArea: this.greenActive || null,
-        urgent : this.show_problem_urgent,
+        urgent: this.show_problem_urgent,
         status: 'PENDENTE',
         image: this.selectedImage ? this.selectedImage.name : null
       };
-  
+
       this.registerService.create_register(data)
         .then(resp => {
           this.register_problem = '';
           this.register_status = '';
           this.description_problem = '';
-  
+          this.profileService.addPoints(this.user, 10);
+
           this.endForm();
           this.toastr.success('Cadastrado com sucesso');
+          this.toastr.success('+10 pontos', 'Parabéns!');
           this.getGreenAreas();
         })
         .catch(error => {
@@ -486,7 +505,30 @@ export class MapsComponent {
         });
     }
   }
-  
-}
 
+  changeStatus() {
+    const data = {
+      status: $('#status_problem').val(),
+      imageResolved: this.selectedImage,
+      descriptionResolved: $('#descriptionStatus').val(),
+    }
+    try {
+      this.problemsService.updateProblem(this.idProblem, data);
+      this.toastr.success('Status alterado !', 'Obrigado pelo feedback !');
+    } catch (error) {
+      console.log(error);
+      this.toastr.warning('Algo deu errado, tente novamente!', 'Ops !',);
+
+    }
+
+  }
+
+  resolvedProblem() {
+    if (this.levelUser) {
+
+    } else {
+      this.toastr.warning('Entre no seu perfil e vire colaborador para colaborar com a comunidade !', 'Seja um colaborador !',);
+    }
+  }
+}
 

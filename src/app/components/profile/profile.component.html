@@ -2,10 +2,12 @@
   <div class="profile-card" *ngFor="let p of profile">
     <img class="profile-image" src="../../../assets/img/profile-man.png" alt="Imagem do Usuário">
     <div class="profile-name">{{p.name}}</div>
-    <div class="profile-email">{{p.email}}</div>
-    <div class="profile-email">{{p.adress}}</div>
-    <div class="profile-email">{{p.city}}</div>
-    <div class="profile-email">{{p.phone}}</div>
+    <div class="profile-email"> <strong>Email:</strong> {{p.email}}</div>
+    <div class="profile-email"><strong>Cidade: </strong>  {{p.city}}</div>
+    <div class="profile-email"><strong>Telefone:</strong>  {{p.phone}}</div>
+    <div class="profile-email"><strong>Pontos Acumulados: </strong> {{p.pontos}}</div>
+    <div class="profile-email"><strong>Colaborador: </strong>{{p.collaborator}}</div>
+    <button type="button" class="btn btn-success" (click)="alteredProfile()" *ngIf="colaborador">Seja um colaborador</button>
   </div>
-
 </div>
+

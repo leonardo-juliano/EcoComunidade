@@ -10,6 +10,9 @@ import { PublicAreaComponent } from './components/public-area/public-area.compon
 import { ProfileComponent } from './components/profile/profile.component';
 import { ProblemsComponent } from './components/problems/problems.component';
 import { SocialComponent } from './components/social/social.component';
+import { AboutComponent } from './components/about/about.component';
+import { ResolvedComponent } from './components/resolved/resolved.component';
+import { LojaComponent } from './components/loja/loja.component';
 
 
 const routes: Routes = [
@@ -24,7 +27,10 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'problems', component: ProblemsComponent},
   {path: 'social', component: SocialComponent},
-  {path: 'detalhes/:id', component: ProblemsComponent}
+  {path: 'detalhes/:id', component: ProblemsComponent},
+  {path: 'sobre', component: AboutComponent},
+  {path: 'resolvidos', component: ResolvedComponent},
+  {path: 'loja', component: LojaComponent}
 ];
 
 @NgModule({

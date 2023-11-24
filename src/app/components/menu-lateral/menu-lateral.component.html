@@ -1,9 +1,6 @@
 
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''" *ngIf="showMenu">
   <div class="logo-container" (click)="toggleCollapse()">
-    <!-- <div class="menu-responsivo">
-      <i class="fa-solid fa-bars" (click)="closeSidenav()"></i>
-    </div> -->
     <div class="logo-container-img">
       <img src="./../../../assets/img/logo.png" alt="">
     </div>
@@ -16,12 +13,6 @@
       <a class="sidenav-nav-link" [routerLink]="[data.routerLink]">
         <i class="sidenav-link-icon" [class]="data.icon"></i>
         <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
-      </a>
-    </li>
-    <li class="sidenav-nav-item" *ngIf="colaborador">
-      <a class="sidenav-nav-link" (click)="redirectProblems()">
-        <i class="fa-solid fa-circle-exclamation-check"></i>
-        <span class="sidenav-link-text" *ngIf="collapsed">Solucionar</span>
       </a>
     </li>
     <li class="sidenav-nav-item">

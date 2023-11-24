@@ -24,6 +24,17 @@ export class ProblemsService {
     }))
   }
 
+  getProblemsResolved(): Observable<any> {
+    return this.firestore.collection('tasks', ref => ref.where('active', '==', 2)).snapshotChanges().pipe(map((problems) => {
+      return problems.map((problem) => {
+        return {
+          id: problem.payload.doc.id,
+          ...problem.payload.doc.data()
+        }
+      })
+    }))
+  }
+
   getProblemById(id): Observable<any> {
     return this.firestore.collection('tasks').doc(id).snapshotChanges().pipe(map((problem) => {
       return {
@@ -31,5 +42,9 @@ export class ProblemsService {
         ...problem.payload.data()
       }
   }))};
+
+  updateProblem(id, data): Promise<any> {
+    return this.firestore.collection('tasks').doc(id).update(data);
+  }
 
 }

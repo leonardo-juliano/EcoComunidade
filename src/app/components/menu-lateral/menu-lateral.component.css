@@ -1,7 +1,6 @@
-/* Estilos base para a barra lateral */
 .sidenav {
   background-color: #00C88E;
-  transition: all 0.5s ease;
+  transition: width 0.5s ease;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -10,27 +9,18 @@
   box-shadow: 1px 0 20px rgba(0, 0, 0, 0.15);
 }
 
-.sidenav .logo-container {
+.logo-container {
   display: flex;
   align-items: center;
   padding: 1rem;
-  width: 100%;
-}
-
-.sidenav .logo-container .logo-container-img {
   cursor: pointer;
 }
 
-.sidenav .logo-container .logo {
-  text-align: center;
-  width: 3rem;
-  min-width: 3rem;
-  padding: 0.313rem;
-  font-size: 24px;
-  font-weight: 900;
+.logo-container-img img {
+  max-width: 100%;
 }
 
-.sidenav .logo-container .btn-close {
+.btn-close {
   margin-left: auto;
   cursor: pointer;
   width: 2rem;
@@ -40,22 +30,10 @@
   border: none;
 }
 
-/* Estilos para a barra lateral recolhida */
 .sidenav-collapsed {
   width: 16.5625rem;
 }
 
-.sidenav-collapsed .sidenav-nav-link {
-  display: flex;
-  align-items: center;
-  height: 3rem;
-  color: #f3f3f3;
-  border-radius: 0.625rem;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-/* Estilos para a navegação na barra lateral */
 .sidenav-nav {
   list-style: none;
   padding: 0.938rem;
@@ -75,16 +53,6 @@
   justify-content: center;
 }
 
-.sidenav-nav-item-exit {
-  position: fixed;
-  bottom: 0;
-}
-
-.sidenav-link-text {
-  margin-left: 1.5rem;
-  color: #ffffff;
-}
-
 .sidenav-nav-link {
   display: flex;
   align-items: center;
@@ -93,52 +61,54 @@
   color: #f3f3f3;
   border-radius: 0.625rem;
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Estilos para a barra lateral recolhida em telas menores */
+.sidenav-nav-link:hover {
+  color: #fff;
+}
+
+.sidenav-link-icon {
+  margin-right: 10px;
+}
+
+.sidenav-link-text {
+  margin-left: 1.5rem;
+}
+
 @media screen and (max-width: 768px) {
   .sidenav {
     width: 100%;
     height: auto;
   }
 
-  .sidenav .logo-container {
+  .logo-container {
     justify-content: space-between;
     padding: 1rem;
     align-items: center;
   }
 
-  .sidenav .logo-container .menu-responsivo {
-    display: block;
-  }
-
-  .sidenav .logo-container .logo-container-img {
+  .logo-container .logo-container-img {
     display: none;
   }
 
-  .sidenav .sidenav-nav {
-    flex-direction: row; /* Exibir links horizontalmente */
+  .sidenav-nav {
+    flex-direction: row;
   }
 
-  .sidenav .sidenav-nav-item {
-    margin-right: 10px; /* Espaçamento entre os itens do menu */
+  .sidenav-nav-item {
+    margin-right: 10px;
   }
 
-  .sidenav .sidenav-nav-link {
+  .sidenav-nav-link {
     height: auto;
   }
 
-  .sidenav .sidenav-link-icon {
-    margin-right: 5px; /* Espaçamento entre o ícone e o texto */
-  }
-
-  .sidenav .sidenav-link-text {
-    display: inline-block; /* Exibir texto ao lado do ícone */
+  .sidenav-link-icon {
+    margin-right: 5px;
   }
 
   .sidenav-collapsed {
     width: 5rem;
   }
-
 }

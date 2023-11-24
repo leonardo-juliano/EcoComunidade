@@ -39,6 +39,11 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { ProblemDetailsComponent } from './components/problem-details/problem-details.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { AboutComponent } from './components/about/about.component';
+import { ResolvedComponent } from './components/resolved/resolved.component';
+import { LojaComponent } from './components/loja/loja.component';
+
+
 
 
 
@@ -59,19 +64,22 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ProblemsComponent,
     SocialComponent,
     ProblemDetailsComponent,
+    AboutComponent,
+    ResolvedComponent,
+    LojaComponent,
     
   ],
   imports: [
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    FormsModule,
     BrowserAnimationsModule,
     NgMultiSelectDropDownModule.forRoot(),
     AngularFireDatabaseModule,
     AngularFireStorageModule,
     ToastrModule.forRoot ( ),
     MatButtonModule,
-    FormsModule,
     ReactiveFormsModule,
     WebcamModule,
     RouterModule,
@@ -84,7 +92,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatTableModule,
     MatPaginatorModule,
     MatDialogModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

@@ -1,0 +1,88 @@
+<body>
+<div class="container mt-5" *ngFor="let i of problemsDetails">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card text-center" >
+        <div class="card-header">
+          RESOLVIDO
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{i.Register_problem}}</h5>
+          <p class="card-text">Descrição: <strong>{{i.descriptionResolved}}</strong></p>
+          
+          
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="problemDetails(i.id)">Detalhes do Problema</button>
+          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal2" (click)="resolvedDetails(i.id)">Detalhes da Resolução</button>
+        </div>
+        <div class="card-footer text-muted">
+          <p class="card-text">Data da resolução: <strong>{{i.dateResolved}}</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Detalhes do Problema</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img [src]="imageUrlShow" alt=""  class="rounded mx-auto d-block" style="width: 200px; height: 200px;">
+        <div class="mb-2">
+            <label for="">Problema: </label>
+            <input type="text" class="form-control" id="problem" name="problem" disabled/>
+
+          </div>
+          <div class="mb-2">
+            <label for="">Descrição detalhada:</label>
+            <input type="text" class="form-control" id="description"  disabled />
+          </div>
+          <div class="mb-2">
+            <label for="">Localização:</label>
+            <input type="text" class="form-control" id="local" disabled />
+          </div>
+          <div class="mb-2">
+            <label for="">Cadastrado por:</label>
+            <input type="text"  class="form-control" id="nameUser" disabled/>
+          </div>        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Detalhes da Resolução</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img [src]="imageUrlShow" alt=""  class="rounded mx-auto d-block" style="width: 200px; height: 200px;">
+        <div class="mb-2">
+            <label for="">Problema: </label>
+            <input type="text" class="form-control" id="problemResolved" name="problem" disabled/>
+
+          </div>
+          <div class="mb-2">
+            <label for="">Descrição da Resolução</label>
+            <input type="text" class="form-control" id="descriptionResolved"  disabled />
+          </div>
+          <div class="mb-2">
+            <label for="">Localização:</label>
+            <input type="text" class="form-control" id="localResolved" disabled />
+          </div>     
+          <div class="mb-2">
+            <label for="">Resolvido por:</label>
+            <input type="text" class="form-control" id="nameResolved" disabled />
+          </div>     
+      </div>
+    </div>
+  </div>
+</div>
+  
+</body>
+

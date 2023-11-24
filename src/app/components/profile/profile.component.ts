@@ -15,6 +15,12 @@ export class ProfileComponent implements OnInit {
   user = '';
   profile = [];
 
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings = {};
+  user_services = 'Todos';
+  collaborator = '';
+
   constructor(
     private toastr: ToastrService,
     private authService: AuthService,
@@ -30,14 +36,19 @@ export class ProfileComponent implements OnInit {
         this.getUser();
       }
     });
-    
   }
 
   getUser() {
     this.profileService.buscarUsuarioPorEmail(this.user)
       .subscribe(data => {
         this.profile = data
-        console.log('detalhes user',data);
+        this.collaborator = this.profile[0].collaborator ;
       });
   }
+
+  alteredProfile() {
+  this.profileService.putColaborrator(this.user)
+  this.toastr.success('Perfil alterado com sucesso!', 'Sucesso!');
+}
+
 }
