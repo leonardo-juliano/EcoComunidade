@@ -43,12 +43,6 @@ import { AboutComponent } from './components/about/about.component';
 import { ResolvedComponent } from './components/resolved/resolved.component';
 import { LojaComponent } from './components/loja/loja.component';
 
-
-
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,

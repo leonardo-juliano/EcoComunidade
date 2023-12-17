@@ -8,9 +8,7 @@
         </div>
         <div class="card-body">
           <h5 class="card-title">{{i.Register_problem}}</h5>
-          <p class="card-text">Descrição: <strong>{{i.descriptionResolved}}</strong></p>
-          
-          
+          <p class="card-text">Descrição: <strong>{{i.descriptionResolved}}</strong></p>          
           <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="problemDetails(i.id)">Detalhes do Problema</button>
           <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal2" (click)="resolvedDetails(i.id)">Detalhes da Resolução</button>
         </div>

@@ -10,25 +10,3 @@ import { MouseEvent } from '@agm/core';
 export class AppComponent {
 
 }
-
-// var video = document.querySelector('video');
-
-// navigator.mediaDevices.getUserMedia({video:true})
-// .then(stream => {
-//     video.srcObject = stream;
-//     video.play();
-// })
-// .catch(error => {
-//     console.log(error);
-// })
-
-
-// // just an interface for type safety.
-// interface marker {
-// 	lat: number;
-// 	lng: number;
-// 	label?: string;
-// 	draggable: boolean;
-// }
-
-

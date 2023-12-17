@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-
-
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { auth } from 'firebase/app';
-
 
 
 @Injectable({
@@ -59,9 +56,6 @@ export class AuthService {
   getUid() {
     return this.auth.auth.currentUser.uid;
   }
-
-
-
 
   async login(email: string, password: string) {
     try {
